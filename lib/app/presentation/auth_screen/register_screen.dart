@@ -20,34 +20,34 @@ class RegisterScreen extends GetWidget<AuthController> {
               5.vertical(),
               const S14Text(AppStrings.pleaseTypeYrFullInfo),
               (size.height * 0.05).vertical(),
-              CommonTextfield(
-                controller: controller.businessName,
+              CommonTextField(
+                controller: controller.name,
                 hintText: AppStrings.name,
                 prefixIcon: AppAssets.personIc,
               ),
-              CommonTextfield(
+              CommonTextField(
                 controller: controller.email,
                 hintText: AppStrings.emailAddress,
                 prefixIcon: AppAssets.emailIc,
                 keyboardType: TextInputType.emailAddress,
               ),
-              CommonTextfield(
+              CommonTextField(
                 controller: controller.mobile,
                 hintText: AppStrings.mobileNumber,
                 prefixIcon: AppAssets.phoneIc,
                 keyboardType: TextInputType.phone,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 maxLength: 10,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
               GetBuilder<AuthController>(
                 builder: (controller) {
-                  return CommonTextfield(
+                  return CommonTextField(
                     controller: controller.pass,
                     hintText: AppStrings.password,
                     prefixIcon: AppAssets.passIc,
                     suffixIcon: controller.obscureText
-                        ? Icons.remove_red_eye_outlined
-                        : Icons.remove_red_eye,
+                        ? Icons.remove_red_eye
+                        : Icons.remove_red_eye_outlined,
                     obscureText: controller.obscureText,
                     keyboardType: TextInputType.visiblePassword,
                     onPressed: () {
@@ -59,14 +59,14 @@ class RegisterScreen extends GetWidget<AuthController> {
               ),
               GetBuilder<AuthController>(
                 builder: (controller) {
-                  return CommonTextfield(
+                  return CommonTextField(
                     controller: controller.rePass,
                     textInputAction: TextInputAction.done,
                     hintText: AppStrings.rePassword,
                     prefixIcon: AppAssets.passIc,
                     suffixIcon: controller.reObscureText
-                        ? Icons.remove_red_eye_outlined
-                        : Icons.remove_red_eye,
+                        ? Icons.remove_red_eye
+                        : Icons.remove_red_eye_outlined,
                     obscureText: controller.reObscureText,
                     keyboardType: TextInputType.visiblePassword,
                     onPressed: () {
@@ -89,7 +89,7 @@ class RegisterScreen extends GetWidget<AuthController> {
                       text: AppStrings.privacy,
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Get.put(SettingController()).docScreen =
+                          Get.put(ProfileController()).docScreen =
                               AppStrings.privacy;
                           Get.toNamed(AppRoutes.commonDocScreen);
                         },
@@ -102,7 +102,7 @@ class RegisterScreen extends GetWidget<AuthController> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Get.put(SettingController()).docScreen =
+                          Get.put(ProfileController()).docScreen =
                               AppStrings.terms;
                           Get.toNamed(AppRoutes.commonDocScreen);
                         },
@@ -135,7 +135,7 @@ class RegisterScreen extends GetWidget<AuthController> {
               ),
               CommonBtn(
                 text: AppStrings.joinWithGoogle,
-                onTap: () => Get.offAllNamed(AppRoutes.dashboardScreen),
+                onTap: () => controller.signInWithGoogle(),
                 btnColor: AppColor.white,
                 icon: AppAssets.googleIc,
                 textColor: AppColor.primaryColor,

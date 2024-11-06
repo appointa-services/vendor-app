@@ -3,13 +3,14 @@ import 'package:salon_user/app/utils/all_dependency.dart';
 class CommonDialog extends StatelessWidget {
   final String title;
   final String desc;
-  final String yesbtnString;
+  final String yesBtnString;
   final Function() onYesTap;
+
   const CommonDialog({
     super.key,
     required this.title,
     required this.desc,
-    required this.yesbtnString,
+    required this.yesBtnString,
     required this.onYesTap,
   });
 
@@ -27,7 +28,10 @@ class CommonDialog extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           Padding(
-            padding: const EdgeInsets.all(p16),
+            padding: const EdgeInsets.all(p16) +
+                EdgeInsets.only(
+                  bottom: MediaQuery.paddingOf(context).bottom / 2,
+                ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -55,7 +59,7 @@ class CommonDialog extends StatelessWidget {
                     15.horizontal(),
                     Expanded(
                       child: CommonBtn(
-                        text: yesbtnString,
+                        text: yesBtnString,
                         btnColor: AppColor.primaryLightColor,
                         textColor: AppColor.primaryColor,
                         vertPad: 12,

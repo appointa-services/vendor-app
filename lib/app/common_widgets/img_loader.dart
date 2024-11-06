@@ -60,13 +60,17 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(rad ?? 5),
-      child: ColoredBox(
-        color: AppColor.grey100,
-        child: SizedBox(
-          height: height ?? 15,
-          width: width ?? 100,
+    return Shimmer.fromColors(
+      baseColor: AppColor.shimmerBaseColor,
+      highlightColor: AppColor.shimmerHighlightColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(rad ?? 5),
+        child: ColoredBox(
+          color: AppColor.grey100,
+          child: SizedBox(
+            height: height ?? 15,
+            width: width ?? 100,
+          ),
         ),
       ),
     );

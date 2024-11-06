@@ -9,35 +9,33 @@ class OtpScreen extends GetWidget<AuthController> {
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
       title: AppStrings.emailVerification,
-      desc: AppStrings.pleaeTypeOtp,
+      desc: AppStrings.pleaseTypeOtp,
       isClear: true,
       isBack: true,
       onTap: () => Get.back(),
       isOtpClear: true,
-      bottomNavBar: IntrinsicHeight(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            p16,
-            10,
-            p16,
-            MediaQuery.of(context).viewInsets.bottom + p16,
+      bottomNavBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              p16,
+              10,
+              p16,
+              MediaQuery.of(context).viewInsets.bottom + p16,
+            ),
+            child: CommonBtn(
+              text: AppStrings.verifyEmail,
+              onTap: () => controller.verifyOtp(),
+            ),
           ),
-          child: CommonBtn(
-            text: AppStrings.verifyEmail,
-            onTap: () => controller.verifyOtp(),
-          ),
-        ),
+        ],
       ),
       children: [
         (size.height * 0.1).vertical(),
         Pinput(
           keyboardType: TextInputType.phone,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          length: 6,
-          onCompleted: (value) {
-            controller.otp.text = value;
-            controller.update();
-          },
           defaultPinTheme: PinTheme(
             decoration: BoxDecoration(
               color: AppColor.grey20,
@@ -45,6 +43,11 @@ class OtpScreen extends GetWidget<AuthController> {
             ),
             height: 55,
           ),
+          length: 6,
+          onCompleted: (value) {
+            controller.otp.text = value;
+            controller.update();
+          },
           focusedPinTheme: PinTheme(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -69,7 +72,11 @@ class OtpScreen extends GetWidget<AuthController> {
         GetBuilder<AuthController>(
           builder: (controller) {
             return GestureDetector(
-              onTap: () => controller.sendOtp(isResend: true),
+              onTap: () {
+                if (controller.otpTime == 0) {
+                  controller.startTimer();
+                }
+              },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
                 child: Row(

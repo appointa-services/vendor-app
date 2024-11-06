@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:212237749630:android:0b1179c91a9f572e52f72f",
         "android_client_info": {
-          "package_name": "com.salonvendorapp.mobile"
+          "package_name": "com.salonuserapp.mobile"
         }
       },
       "oauth_client": [

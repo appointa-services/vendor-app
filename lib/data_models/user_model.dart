@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:salon_user/backend/database_key.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
 
@@ -8,8 +9,11 @@ class UserModel {
   final String name;
   final String? image;
   final String? mobile;
+  final String? dob;
+  final String? gender;
   final String? password;
   final bool isGoogle;
+  RxBool isLoad;
   final BusinessModel? businessData;
 
   UserModel({
@@ -17,9 +21,12 @@ class UserModel {
     required this.email,
     required this.name,
     this.image,
+    this.gender,
+    this.dob,
     this.mobile,
     this.password,
     this.isGoogle = false,
+    required this.isLoad,
     this.businessData,
   });
 
@@ -29,13 +36,16 @@ class UserModel {
         image: json[DatabaseKey.image],
         name: json[DatabaseKey.name],
         mobile: json[DatabaseKey.mobile],
+        dob: json[DatabaseKey.dob],
+        gender: json[DatabaseKey.gender],
         password: json[DatabaseKey.password],
+        isGoogle: json[DatabaseKey.isGoogle],
+        isLoad: RxBool(false),
         businessData: json[DatabaseKey.businessData] == null
             ? null
             : BusinessModel.fromJson(
                 json[DatabaseKey.businessData],
               ),
-        isGoogle: json[DatabaseKey.isGoogle],
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +53,9 @@ class UserModel {
         DatabaseKey.email: email,
         if (image != null) DatabaseKey.image: image,
         DatabaseKey.name: name,
-        DatabaseKey.mobile: mobile ?? "",
+        if (mobile != null) DatabaseKey.mobile: mobile ?? "",
+        if (dob != null) DatabaseKey.dob: dob ?? "",
+        if (gender != null) DatabaseKey.gender: gender ?? "",
         if (password != null) DatabaseKey.password: password,
         DatabaseKey.isGoogle: isGoogle,
         if (businessData != null)

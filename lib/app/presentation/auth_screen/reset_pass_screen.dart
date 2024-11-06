@@ -8,7 +8,7 @@ class ResetPassScreen extends GetWidget<AuthController> {
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
       title: "${AppStrings.newPass},",
-      desc: AppStrings.nowUcanCreate,
+      desc: AppStrings.nowUCanCreate,
       isBack: true,
       isClear: false,
       onTap: () => Get.back(),
@@ -33,7 +33,7 @@ class ResetPassScreen extends GetWidget<AuthController> {
         (size.height * 0.1).vertical(),
         GetBuilder<AuthController>(
           builder: (controller) {
-            return CommonTextfield(
+            return CommonTextField(
               controller: controller.pass,
               hintText: AppStrings.newPass,
               prefixIcon: AppAssets.passIc,
@@ -51,7 +51,7 @@ class ResetPassScreen extends GetWidget<AuthController> {
         ),
         GetBuilder<AuthController>(
           builder: (controller) {
-            return CommonTextfield(
+            return CommonTextField(
               controller: controller.rePass,
               textInputAction: TextInputAction.done,
               hintText: AppStrings.confirmNewPass,

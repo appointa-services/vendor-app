@@ -30,11 +30,12 @@ class ForgotPassScreen extends GetWidget<AuthController> {
       ),
       children: [
         (size.height * 0.1).vertical(),
-        CommonTextfield(
+        CommonTextField(
           controller: controller.email,
           prefixIcon: AppAssets.emailIc,
           hintText: AppStrings.emailAddress,
           keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.done,
         ),
       ],
     );

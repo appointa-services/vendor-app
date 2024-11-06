@@ -1,253 +1,350 @@
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:salon_user/app/common_widgets/image_network.dart';
+import 'package:salon_user/app/common_widgets/img_loader.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:salon_user/data_models/user_model.dart';
+import 'package:salon_user/data_models/vendor_data_models.dart';
+import 'package:shimmer/shimmer.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController());
-    return Scaffold(
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          Get.bottomSheet(
-            const AddAppointmentScreen(),
-            isDismissible: false,
-            isScrollControlled: true,
-          );
-        },
-        child: const DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColor.primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 2,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: Icon(
-              Icons.add_rounded,
-              color: AppColor.white,
-            ),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            GestureDetector(
-              onTap: () {
-                controller.isCalenderOpen = false;
-                controller.update();
-              },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(p16),
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.isCalenderOpen = true;
-                        controller.update();
-                      },
-                      child: Row(
-                        children: [
-                          GetBuilder<HomeController>(
-                            builder: (controller) {
-                              return S24Text("${controller.headerText} ");
-                            },
-                          ),
-                          const Icon(Icons.keyboard_arrow_down_rounded),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 35,
-                    child: GetBuilder<HomeController>(
+    HomeController controller = Get.put(HomeController(), permanent: true);
+    RefreshController refreshController = RefreshController();
+    return SafeArea(
+      child: Obx(
+        () {
+          return SmartRefresher(
+            controller: refreshController,
+            onRefresh: () {
+              refreshController.refreshCompleted();
+              controller.getVendorList();
+              controller.getCategoryData();
+            },
+            child: ListView(
+              padding: const EdgeInsets.all(p16),
+              children: [
+                Row(
+                  children: [
+                    GetBuilder<HomeController>(
                       builder: (controller) {
-                        return ListView(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          children: List.generate(
-                            5,
-                            (index) {
-                              String text =
-                                  index == 0 ? "All" : "Employee $index";
-                              bool isSelected = controller.selectedEmp == text;
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.selectedEmp = text;
-                                  controller.update();
-                                },
-                                child: ColoredBox(
-                                  color: Colors.transparent,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      left: index == 0 ? p16 : 8,
-                                      right: index == 4 ? p16 : 8,
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            S16Text(
-                                              text,
-                                              fontWeight: isSelected
-                                                  ? FontWeight.w700
-                                                  : FontWeight.w600,
-                                              color: isSelected
-                                                  ? AppColor.grey100
-                                                  : AppColor.grey80,
-                                            ),
-                                            Container(
-                                              height: 2,
-                                              margin:
-                                                  const EdgeInsets.only(top: 3),
-                                              width: 10,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: isSelected
-                                                    ? AppColor.grey100
-                                                    : Colors.transparent,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
+                        return Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              S24Text("Hello, ${controller.user?.name}"),
+                              const S14Text(AppStrings.findTheService),
+                            ],
                           ),
                         );
                       },
                     ),
+                    GestureDetector(
+                      onTap: () => Get.toNamed(AppRoutes.profileScreen),
+                      child: CircleAvatar(
+                        backgroundColor: AppColor.primaryColor,
+                        child: SvgPicture.asset(
+                          AppAssets.personIc,
+                          // ignore: deprecated_member_use
+                          color: AppColor.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                20.vertical(),
+                CarouselSlider.builder(
+                  itemCount: 3,
+                  options: CarouselOptions(
+                    aspectRatio: 2.2,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    viewportFraction: 0.95,
+                    disableCenter: false,
+                    padEnds: false,
                   ),
-                  Expanded(
-                    child: GetBuilder<HomeController>(
-                      builder: (controller) {
-                        return ListView.builder(
-                          itemCount: 10,
-                          padding: const EdgeInsets.fromLTRB(p16, 0, p16, 60),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                controller.isPymentScreen = false;
-                                Get.bottomSheet(
-                                  const AppointmentDetailSheet(),
-                                  isDismissible: false,
-                                  isScrollControlled: true,
-                                );
-                              },
-                              child: ColoredBox(
-                                color: Colors.transparent,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: 15,
-                                    top: 10,
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const S14Text(
-                                            "12: 45 PM",
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColor.grey100,
+                  itemBuilder: (context, index, realIndex) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColor.primaryLightColor,
+                        ),
+                        child: const SizedBox(
+                          height: 150,
+                          width: double.infinity,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                20.vertical(),
+                if (!(controller.vendorList.isEmpty &&
+                    !controller.isBusinessLoad.value))
+                  ViewAllBtn(
+                    onTap: () {
+                      if (!controller.isBusinessLoad.value) {
+                        controller.filterVendorByCat("all");
+                        controller.selectedCatList.clear();
+                        controller.selectedCat.value = "";
+                        Get.toNamed(AppRoutes.productListingScreen);
+                      }
+                    },
+                    text: AppStrings.featuredSaloon,
+                  ),
+                if (!(controller.vendorList.isEmpty &&
+                    !controller.isBusinessLoad.value))
+                  SizedBox(
+                    height: 320,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.isBusinessLoad.value
+                          ? 3
+                          : controller.vendorList.length,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      itemBuilder: (context, index) {
+                        if (controller.isBusinessLoad.value) {
+                          return const Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LoadingWidget(
+                                  rad: 10,
+                                  height: 170,
+                                  width: 170,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10, bottom: 5),
+                                  child: LoadingWidget(width: 120, height: 10),
+                                ),
+                                LoadingWidget(width: 65),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                                  child: LoadingWidget(width: 100, height: 10),
+                                ),
+                                LoadingWidget(width: 40, height: 12),
+                              ],
+                            ),
+                          );
+                        } else {
+                          UserModel userData = controller.vendorList[index];
+                          return GestureDetector(
+                            onTap: () {
+                              controller.selectedIndex = index;
+                              Get.toNamed(
+                                AppRoutes.vendorScreen,
+                                arguments: userData,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: SizedBox(
+                                width: 170,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: ImageNet(
+                                            userData.businessData?.logo ?? "",
+                                            height: 170,
+                                            width: 170,
+                                            boxFit: BoxFit.cover,
                                           ),
-                                          3.vertical(),
-                                          const S12Text("30 min"),
-                                        ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Obx(
+                                            () {
+                                              bool isFav = userData
+                                                      .businessData?.favouriteList
+                                                      .any((element) =>
+                                                          element.id ==
+                                                          controller.user?.id) ??
+                                                  false;
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  if (!userData.isLoad.value) {
+                                                    controller
+                                                        .addRemoveFav(index);
+                                                  }
+                                                },
+                                                child: CircleAvatar(
+                                                  backgroundColor: AppColor.white,
+                                                  radius: 15,
+                                                  child: userData.isLoad.value
+                                                      ? const Padding(
+                                                          padding:
+                                                              EdgeInsets.all(8),
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 2,
+                                                            color:
+                                                                AppColor.grey100,
+                                                          ),
+                                                        )
+                                                      : Icon(
+                                                          isFav
+                                                              ? Icons.favorite
+                                                              : Icons
+                                                                  .favorite_border,
+                                                          color: isFav
+                                                              ? AppColor.redColor
+                                                              : AppColor.grey100,
+                                                          size: 20,
+                                                        ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    10.vertical(),
+                                    S12Text(
+                                      listToString(
+                                        controller.getCatNameList(
+                                          userData.businessData?.selectedCat ??
+                                              [],
+                                        ),
+                                      ),
+                                      color: AppColor.primaryColor,
+                                    ),
+                                    S16Text(
+                                      userData.businessData?.businessName ?? "",
+                                      maxLines: 1,
+                                      color: AppColor.grey100,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    5.vertical(),
+                                    S12Text(
+                                      userData.businessData?.businessAddress ??
+                                          "",
+                                      maxLines: 2,
+                                    ),
+                                    10.vertical(),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.star_rate_rounded,
+                                          color: AppColor.orange,
+                                          size: 15,
+                                        ),
+                                        const S12Text(
+                                          " 0.0",
+                                          color: AppColor.primaryColor,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        S12Text(
+                                          " (${userData.businessData?.reviewList?.length ?? 0})",
+                                          color: AppColor.primaryColor,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                if (!(controller.categoryList.isEmpty &&
+                    !controller.isCatLoader.value))
+                  const S16Text(
+                    AppStrings.whatDoU,
+                    fontWeight: FontWeight.w700,
+                    color: AppColor.grey100,
+                  ),
+                if (!(controller.categoryList.isEmpty &&
+                    !controller.isCatLoader.value))
+                  GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.isCatLoader.value
+                        ? 2
+                        : controller.categoryList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.only(top: 15, bottom: 5),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.8,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                    ),
+                    itemBuilder: (context, index) {
+                      CategoryModel? catData;
+                      if (!controller.isCatLoader.value) {
+                        catData = controller.categoryList[index];
+                      }
+                      return catData == null
+                          ? Shimmer.fromColors(
+                              baseColor: AppColor.shimmerBaseColor,
+                              highlightColor: AppColor.shimmerHighlightColor,
+                              child: const ColoredBox(color: AppColor.grey100),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                controller.selectedCat.value = catData!.catName;
+                                controller.selectedCatList.clear();
+                                controller.filterVendorByCat(catData.catId);
+                                Get.toNamed(AppRoutes.productListingScreen);
+                              },
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: AppColor.grey20,
+                                ),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Stack(
+                                    alignment: Alignment.bottomLeft,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 15),
+                                          child: ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                              bottomRight: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                            ),
+                                            child: ImageNet(
+                                              catData.catImg,
+                                              height: 65,
+                                              width: 65,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 15,
-                                        ),
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            color: AppColor.grey100,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: const SizedBox(
-                                            height: 30,
-                                            width: 2,
-                                          ),
+                                        padding: const EdgeInsets.all(10),
+                                        child: S14Text(
+                                          catData.catName,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColor.grey100,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const S16Text(
-                                              "Client name",
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColor.grey100,
-                                            ),
-                                            const S12Text("Beard Shave"),
-                                            if (controller.selectedEmp == "All")
-                                              const SText(
-                                                "Employee name",
-                                                size: 10,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            1.vertical(),
-                                          ],
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      const CircleAvatar(
-                                        backgroundColor: AppColor.grey40,
-                                        backgroundImage: AssetImage(
-                                          AppAssets.dummyPerson1,
-                                        ),
-                                      )
                                     ],
                                   ),
                                 ),
                               ),
                             );
-                          },
-                        );
-                      },
-                    ),
+                    },
                   ),
-                ],
-              ),
+              ],
             ),
-            GetBuilder<HomeController>(
-              builder: (controller) {
-                return controller.isCalenderOpen
-                    ? CalenderWidget(
-                        focusedDay: controller.focusedDay,
-                        onDateSelect: (date) {
-                          controller.focusedDay = date;
-                          controller.headerText =
-                              isSameDay(DateTime.now(), date)
-                                  ? "Today"
-                                  : DateFormat("dd MMMM, yyyy").format(date);
-                          controller.isCalenderOpen = false;
-                          controller.update();
-                        },
-                      )
-                    : const SizedBox();
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

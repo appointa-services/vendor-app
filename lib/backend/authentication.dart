@@ -2,7 +2,7 @@ import 'package:crypt/crypt.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:salon_user/app/helper/helper.dart';
+import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
 import 'package:salon_user/backend/database_key.dart';
 import 'package:salon_user/backend/database_ref.dart';
@@ -45,8 +45,8 @@ class AuthenticationApiClass {
           },
         );
       } else {
-        /// vendor login
-        var userData = await getData(DatabaseRef.vendor, email);
+        /// user login
+        var userData = await getData(DatabaseRef.user, email);
         if (userData != null) {
           (userData as Map).forEach(
             (key, value) {
@@ -66,13 +66,13 @@ class AuthenticationApiClass {
       }
     } on Exception catch (e) {
       response = LoginResponse(isError: true);
-      ('login exception -> $e').print();
+      ('login exception -> $e').print;
     }
     Loader.dismiss();
     return response;
   }
 
-  /// signin with google
+  /// sign in with google
   static Future<UserModel?> signInWithGoogle() async {
     Loader.show();
     UserModel? finalUser;
@@ -81,18 +81,19 @@ class AuthenticationApiClass {
 
       if (googleUser != null) {
         /// check user is avail or not
-        var userData = await getData(DatabaseRef.vendor, googleUser.email);
+        var userData = await getData(DatabaseRef.user, googleUser.email);
 
         if (userData == null) {
           UserModel data = UserModel(
             email: googleUser.email,
             image: googleUser.photoUrl ?? "",
             name: googleUser.displayName ?? "",
+            isLoad: RxBool(false),
             isGoogle: true,
           );
-          var orderRef = DatabaseRef.vendor.push();
+          var orderRef = DatabaseRef.user.push();
           await orderRef.set(data.toJson()).then((value) {
-            DatabaseRef.vendor.child(orderRef.key!).update(
+            DatabaseRef.user.child(orderRef.key!).update(
               {DatabaseKey.id: orderRef.key},
             );
           });
@@ -100,14 +101,14 @@ class AuthenticationApiClass {
           user.addAll({DatabaseKey.id: orderRef.key});
           finalUser = UserModel.fromMap(user);
         } else {
-          "-->> google user $userData".print();
+          "-->> google user $userData".print;
           (userData as Map).forEach((key, value) {
             finalUser = UserModel.fromMap(value);
           });
         }
       }
     } on Exception catch (e) {
-      ('signin with google exception -> $e').print();
+      ('signin with google exception -> $e').print;
     }
     Loader.dismiss();
     return finalUser;
@@ -122,8 +123,8 @@ class AuthenticationApiClass {
     UserModel? finalUser;
     try {
       var data = await getData(
-        DatabaseRef.vendor,
-        email.toLowerCase(),
+        DatabaseRef.user,
+        email.toLowerCase().trim(),
         comKey: DatabaseKey.email,
       );
       if (data == null) {
@@ -144,7 +145,7 @@ class AuthenticationApiClass {
         isExist = true;
       }
     } catch (e) {
-      'sendOtp exception $e'.print();
+      'sendOtp exception $e'.print;
     }
     Loader.dismiss();
     return (otpSent, isExist, finalUser);
@@ -162,9 +163,9 @@ class AuthenticationApiClass {
     try {
       verifyOtp = EmailOTP.verifyOTP(otp: otp);
       if (verifyOtp && !isPass) {
-        var orderRef = DatabaseRef.vendor.push();
+        var orderRef = DatabaseRef.user.push();
         await orderRef.set(userData.toJson()).then((value) {
-          DatabaseRef.vendor.child(orderRef.key!).update(
+          DatabaseRef.user.child(orderRef.key!).update(
             {DatabaseKey.id: orderRef.key},
           );
         });
@@ -173,7 +174,7 @@ class AuthenticationApiClass {
         finalUser = UserModel.fromMap(user);
       }
     } catch (e) {
-      'verifyOtp exception $e'.print();
+      'verifyOtp exception $e'.print;
     }
     Loader.dismiss();
     return (verifyOtp, finalUser);
@@ -183,12 +184,12 @@ class AuthenticationApiClass {
     bool isUpdate = false;
     Loader.show();
     try {
-      await DatabaseRef.vendor.child(id).update(
+      await DatabaseRef.user.child(id).update(
         {DatabaseKey.password: Crypt.sha256(pass).toString()},
       ).then((value) => isUpdate = true);
     } catch (e) {
       isUpdate = false;
-      'resetPass exception $e'.print();
+      'resetPass exception $e'.print;
     }
     Loader.dismiss();
     return isUpdate;

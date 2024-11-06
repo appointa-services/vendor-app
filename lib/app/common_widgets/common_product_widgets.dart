@@ -1,4 +1,8 @@
+import 'package:salon_user/app/common_widgets/image_network.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
+import 'package:salon_user/data_models/user_model.dart';
+import 'package:salon_user/data_models/vendor_data_models.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 class CategoryWidget extends StatelessWidget {
   final Function() onTap;
@@ -6,6 +10,7 @@ class CategoryWidget extends StatelessWidget {
   final bool isSelected;
   final bool isShadow;
   final bool isBookingScreen;
+
   const CategoryWidget({
     super.key,
     required this.onTap,
@@ -53,19 +58,30 @@ class CategoryWidget extends StatelessWidget {
   }
 }
 
-class VendorDetailWidget extends StatelessWidget {
+class VendorDetailWidget extends StatefulWidget {
   final int currentPage;
   final Function(int index) onPageChange;
+  final UserModel? data;
+
   const VendorDetailWidget({
     super.key,
     required this.currentPage,
     required this.onPageChange,
+    this.data,
   });
 
   @override
+  State<VendorDetailWidget> createState() => _VendorDetailWidgetState();
+}
+
+class _VendorDetailWidgetState extends State<VendorDetailWidget> {
+  int currentImg = 0;
+
+  @override
   Widget build(BuildContext context) {
+    BusinessModel? data = widget.data?.businessData;
     return GestureDetector(
-      onTap: () => Get.toNamed(AppRoutes.vendorScreen),
+      onTap: () => Get.toNamed(AppRoutes.vendorScreen, arguments: widget.data),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,21 +91,23 @@ class VendorDetailWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: CarouselSlider.builder(
-                  itemCount: 5,
+                  itemCount: data?.images.length ?? 0,
                   options: CarouselOptions(
                     viewportFraction: 1,
                     aspectRatio: 1.6,
                     onPageChanged: (indexes, reason) {
-                      onPageChange(indexes);
+                      setState(() => currentImg = indexes);
                     },
                   ),
                   itemBuilder: (context, index, realIndex) {
-                    return Image.asset(
-                      index % 2 == 0
-                          ? AppAssets.dummySalon2
-                          : AppAssets.dummySalon,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    String img = data?.images[index];
+                    return ColoredBox(
+                      color: AppColor.grey20,
+                      child: ImageNet(
+                        img,
+                        width: double.infinity,
+                        shimmerWidth: double.infinity,
+                      ),
                     );
                   },
                 ),
@@ -97,7 +115,7 @@ class VendorDetailWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  5,
+                  data?.images.length ?? 0,
                   (indexes) => Padding(
                     padding: const EdgeInsets.only(
                       bottom: 15,
@@ -106,7 +124,7 @@ class VendorDetailWidget extends StatelessWidget {
                     ),
                     child: CircleAvatar(
                       radius: 4,
-                      backgroundColor: currentPage == indexes
+                      backgroundColor: currentImg == indexes
                           ? AppColor.white
                           : Colors.white54,
                     ),
@@ -116,71 +134,95 @@ class VendorDetailWidget extends StatelessWidget {
             ],
           ),
           5.vertical(),
-          const S18Text("Plush Beauty Salon"),
-          const S14Text("salon address is here"),
-          2.vertical(),
-          const S14Text(
-            "Open until 9:00 PM",
-            fontWeight: FontWeight.w600,
-          ),
-          8.vertical(),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.star_rate_rounded,
-                color: AppColor.orange,
-                size: 20,
+              Padding(
+                padding: const EdgeInsets.only(top: 5, right: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: ImageNet(
+                    data?.logo ?? '',
+                    width: 40,
+                    height: 40,
+                    boxFit: BoxFit.cover,
+                  ),
+                ),
               ),
-              5.horizontal(),
-              const S14Text(
-                "5.0",
-                color: AppColor.grey100,
-                fontWeight: FontWeight.w700,
-              ),
-              const S14Text(
-                " (100)",
-                color: AppColor.grey100,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    S18Text(data?.businessName ?? ""),
+                    S14Text(data?.businessAddress ?? "", maxLines: 2),
+                    2.vertical(),
+                    Row(
+                      children: [
+                        S14Text(
+                          getCurrentStatus(data: data?.intervalList ?? []),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.star_rate_rounded,
+                          color: AppColor.orange,
+                          size: 20,
+                        ),
+                        5.horizontal(),
+                        const S14Text(
+                          "0",
+                          color: AppColor.grey100,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        const S14Text(
+                          " (0)",
+                          color: AppColor.grey100,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
           const Divider(height: 20),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 2,
-            itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        S16Text(
-                          "Men Haicut",
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.grey100,
-                        ),
-                        S14Text("${AppStrings.rupee}450"),
-                      ],
-                    ),
-                    S14Text("30 mins"),
-                  ],
-                ),
-              );
-            },
-          ),
-          GestureDetector(
-            onTap: () => Get.toNamed(AppRoutes.vendorScreen),
-            child: const S14Text(
-              "Show more",
-              color: AppColor.primaryColor,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          25.vertical(),
+          10.vertical(),
+          // ListView.builder(
+          //   shrinkWrap: true,
+          //   physics: const NeverScrollableScrollPhysics(),
+          //   itemCount: 2,
+          //   padding: EdgeInsets.zero,
+          //   itemBuilder: (context, index) {
+          //     return const Padding(
+          //       padding: EdgeInsets.only(bottom: 10),
+          //       child: Column(
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           Row(
+          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //             children: [
+          //               S16Text(
+          //                 "Men Haircut",
+          //                 fontWeight: FontWeight.w600,
+          //                 color: AppColor.grey100,
+          //               ),
+          //               S14Text("₹450"),
+          //             ],
+          //           ),
+          //           S14Text("30 mains"),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // ),
+          // GestureDetector(
+          //   onTap: () => Get.toNamed(AppRoutes.vendorScreen),
+          //   child: const S14Text(
+          //     "Show more",
+          //     color: AppColor.primaryColor,
+          //     fontWeight: FontWeight.w700,
+          //   ),
+          // ),
         ],
       ),
     );
@@ -189,54 +231,120 @@ class VendorDetailWidget extends StatelessWidget {
 
 class SearchWidget extends StatelessWidget {
   final int index;
-  const SearchWidget({super.key, required this.index});
+  final UserModel? userData;
+
+  const SearchWidget({super.key, required this.index, this.userData});
 
   @override
   Widget build(BuildContext context) {
+    BusinessModel? data = userData?.businessData;
+    HomeController controller = Get.find();
+    List service = data?.serviceNameList.where((e) {
+          return (e as String)
+              .toLowerCase()
+              .contains(controller.searchController.text);
+        }).toList() ??
+        [];
     return GestureDetector(
       onTap: () {
+        controller.selectedIndex = index;
         Get.toNamed(
           AppRoutes.vendorScreen,
-          arguments: index % 2 != 0,
+          arguments: userData,
         );
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 18),
         child: Row(
+          crossAxisAlignment: service.isEmpty
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: const DecorationImage(
-                  image: AssetImage(AppAssets.dummySalon2),
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: ImageNet(
+                data?.logo ?? "",
+                height: 50,
+                width: 50,
+                boxFit: BoxFit.cover,
               ),
-              child: const SizedBox(height: 45, width: 45),
             ),
             10.horizontal(),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  S16Text(
-                    index % 2 == 0 ? "Venue name" : "Service name",
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.grey100,
-                    maxLines: 1,
+                  SearchText(
+                    text: data?.businessName ?? "",
+                    search: controller.searchController.text,
+                    size: 16,
                   ),
-                  S14Text(
-                    index % 2 == 0
-                        ? "Venue • Xyz Mall, Surat, Gujarat"
-                        : "Service • Vanue name • Xyz Mall, Surat, Gujarat",
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.grey60,
-                    maxLines: 1,
+                  SearchText(
+                    text: data?.businessAddress ?? "",
+                    search: controller.searchController.text,
+                    size: 14,
+                  ),
+                  if (service.isNotEmpty)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 5, bottom: 2),
+                      child: S12Text("Services"),
+                    ),
+                  ...List.generate(
+                    service.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.all(1),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.subdirectory_arrow_right_rounded,
+                            size: 12,
+                          ),
+                          5.horizontal(),
+                          SearchText(
+                            text: service[index],
+                            search: controller.searchController.text,
+                            size: 12,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SearchText extends StatelessWidget {
+  final String text;
+  final String search;
+  final double size;
+
+  const SearchText({
+    super.key,
+    required this.text,
+    required this.search,
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SubstringHighlight(
+      text: text,
+      term: search,
+      maxLines: 2,
+      textStyleHighlight: TextStyle(
+        fontSize: size,
+        color: AppColor.grey100,
+        fontWeight: FontWeight.w500,
+      ),
+      textStyle: TextStyle(
+        fontSize: size,
+        color: AppColor.grey60,
       ),
     );
   }

@@ -29,25 +29,25 @@ class DashboardScreen extends GetView<DashboardController> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       icon(
-                        AppAssets.scheduleIc,
+                        AppAssets.homeIc,
                         controller.screenIndex == 0,
                         0,
                       ),
                       icon(
-                        AppAssets.personIc,
+                        AppAssets.searchIc,
                         controller.screenIndex == 1,
                         1,
                       ),
                       icon(
-                        AppAssets.sellsIc,
+                        AppAssets.scheduleIc,
                         controller.screenIndex == 2,
                         2,
                       ),
-                      icon(
-                        AppAssets.settingIc,
-                        controller.screenIndex == 3,
-                        3,
-                      ),
+                      // icon(
+                      //   AppAssets.personIc,
+                      //   controller.screenIndex == 3,
+                      //   3,
+                      // ),
                     ],
                   ),
                   (MediaQuery.of(context).padding.bottom / 2).vertical(),
@@ -79,6 +79,7 @@ class DashboardScreen extends GetView<DashboardController> {
             children: [
               SvgPicture.asset(
                 icon,
+                // ignore: deprecated_member_use
                 color: isSelect ? AppColor.primaryColor : null,
               ),
               5.vertical(),

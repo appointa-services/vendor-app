@@ -72,11 +72,11 @@ class CommonBtn extends StatelessWidget {
 }
 
 class ViewAllBtn extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final String text;
   const ViewAllBtn({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.text,
   });
 
@@ -90,14 +90,15 @@ class ViewAllBtn extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColor.grey100,
         ),
-        GestureDetector(
-          onTap: onTap,
-          child: const S14Text(
-            AppStrings.viewAll,
-            fontWeight: FontWeight.w500,
-            color: AppColor.primaryColor,
-          ),
-        )
+        if (onTap != null)
+          GestureDetector(
+            onTap: onTap,
+            child: const S14Text(
+              AppStrings.viewAll,
+              fontWeight: FontWeight.w500,
+              color: AppColor.primaryColor,
+            ),
+          )
       ],
     );
   }

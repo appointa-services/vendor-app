@@ -30,18 +30,18 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBTxcJDd6OHZjkDzzAoNnL1zmOCP7aZ-y4',
-    appId: '1:212237749630:android:0b1179c91a9f572e52f72f',
+    appId: '1:212237749630:android:c27f51a24829c15d52f72f',
     messagingSenderId: '212237749630',
     projectId: 'saloon-ae3be',
     storageBucket: 'saloon-ae3be.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB94LrAQV56ZRdgGs-3yuTukl3Vi50ZVGw',
-    appId: '1:762438574934:ios:4586a6666f3d58969decf7',
+    apiKey: 'AIzaSyBBICZYa-hqM6qRzH5F5LM0sNfpfCTpQTI',
+    appId: '1:212237749630:ios:45db7cebd0d6d98852f72f',
     messagingSenderId: '212237749630',
-    projectId: 'ydsusa',
+    projectId: 'saloon-ae3be',
     storageBucket: 'saloon-ae3be.appspot.com',
-    iosBundleId: 'com.app.r-wings',
+    iosBundleId: 'com.salonuserapp.mobile',
   );
 }

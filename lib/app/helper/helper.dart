@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
+import 'package:salon_user/data_models/vendor_data_models.dart';
 
 class Helper {
   static void lightTheme() {
@@ -40,15 +40,6 @@ class Helper {
   }
 }
 
-bool emailValid(email) => RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-    .hasMatch(email);
-
-bool mobileValid(String mobile) =>
-    RegExp(r'^(?:[+0][1-9])?[0-9]{10}$').hasMatch(mobile) &&
-    RegExp(r'^[6-9]$').hasMatch(mobile[0]);
-bool passValid(String pass) => pass.length >= 6;
-
 /// common padd
 const double p16 = 16;
 
@@ -63,9 +54,11 @@ extension Sizedbox on dynamic {
 }
 
 extension Print on dynamic {
-  void print() {
-    log(this, name: AppStrings.appName);
-  }
+  // void print() {
+  //   log(this, name: AppStrings.appName);
+  // }
+
+  void get print => log(this, name: AppStrings.appName);
 }
 
 void showSnackBar(String message, {Color? color}) {
@@ -83,101 +76,83 @@ void showSnackBar(String message, {Color? color}) {
   );
 }
 
-Future<List<String>> selectFiles() async {
-  final ImagePicker picker = ImagePicker();
+bool emailValid(email) => RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+    .hasMatch(email);
 
-  List<XFile> list = await picker.pickMultiImage(
-    maxHeight: 1920,
-    maxWidth: 1920,
-  );
+bool mobileValid(String mobile) =>
+    RegExp(r'^(?:[+0][1-9])?[0-9]{10}$').hasMatch(mobile) &&
+    RegExp(r'^[6-9]$').hasMatch(mobile[0]);
+bool passValid(String pass) => pass.length >= 6;
 
-  List<String> paths = [];
+String listToString(List? list,{String? comaReplacer}) =>
+    list?.toString().replaceAll("[", "").replaceAll("]", "").replaceAll(",", comaReplacer ?? ",") ?? "";
 
-  for (XFile image in list) {
-    if (getImageSize(File(image.path)) != null) {
-      paths.add(image.path);
+/// get vendor current status
+String getCurrentStatus({List<IntervalModel>? data, IntervalModel? modelData}) {
+  String status = "Closed";
+
+  if (data?.isNotEmpty ?? false) {
+    IntervalModel model = data?[DateTime.now().weekday - 1] ?? modelData!;
+
+    if (model.data?.endTime != null) {
+      DateTime now = DateTime.now();
+      DateTime end = convertTo24HourFormat(model.data!.endTime, now);
+
+      if (end.difference(now).inHours > 0) {
+        status = "Open until ${model.data?.endTime}";
+      } else if (end.difference(now).inHours >= 0 &&
+          end.difference(now).inMinutes > 0) {
+        status = "Closes soon at ${model.data?.endTime}";
+      }
     }
   }
-  if (list.length != paths.length) {
-    showSnackBar(
-      "Please select upto 2mb images only",
-      color: Colors.red,
-    );
-  }
-  return paths;
+  return status;
 }
 
-Future<String> selectFile() async {
-  final ImagePicker picker = ImagePicker();
+bool isOnline(String status) {
+  return !status.contains("Closed");
+}
 
-  XFile? img = await picker.pickImage(
-    source: ImageSource.gallery,
-    maxHeight: 1920,
-    maxWidth: 1920,
+String startToEnd(DayDatModel? data) {
+  return data == null ? "Closed" : "${data.startTime} - ${data.endTime}";
+}
+
+DateTime convertTo24HourFormat(String time12Hour, DateTime date) {
+  DateFormat time12HourFormat = DateFormat("hh:mm a");
+  DateTime time = time12HourFormat.parse(time12Hour);
+
+  DateTime combinedDateTime = DateTime(
+    date.year,
+    date.month,
+    date.day,
+    time.hour,
+    time.minute,
   );
 
-  String paths = "";
-
-  if (img != null) {
-    if (getImageSize(File(img.path)) != null) {
-      paths = img.path;
-    } else {
-      showSnackBar(
-        "Please select upto 2mb images only",
-        color: Colors.red,
-      );
-    }
-  }
-
-  return paths;
+  return combinedDateTime;
 }
 
-String? getImageSize(File selectedImage) {
-  final bytes = selectedImage.readAsBytesSync().lengthInBytes;
-  final kb = bytes / 1024;
-  if (kb < 2048) {
-    return selectedImage.path;
-  } else {
-    return null;
-  }
+bool isSameDate(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+      date1.month == date2.month &&
+      date1.day == date2.day;
 }
 
-bool isCurrentMonth(DateTime date1, DateTime date2) {
-  return date1.month == date2.month && date1.year == date2.year;
-}
+double lat = 21.199150;
+double lng = 72.846411;
 
-bool compareTimes(String time1, String time2) {
-  bool isOk = false;
-  TimeOfDay parsedTime1 = parseTime(time1);
-  TimeOfDay parsedTime2 = parseTime(time2);
+DateTime timeToDate(String time) {
+  DateFormat timeFormat = DateFormat("hh:mm a");
+  DateTime timeDate = timeFormat.parse(time);
 
-  int minutes1 = toMinutes(parsedTime1);
-  int minutes2 = toMinutes(parsedTime2);
-
-  if (minutes1 < minutes2) {
-    isOk = true;
-  }
-  return isOk;
-}
-
-int toMinutes(TimeOfDay timeOfDay) {
-  return timeOfDay.hour * 60 + timeOfDay.minute;
-}
-
-TimeOfDay parseTime(String time) {
-  final parts = time.split(' ');
-  final timeParts = parts[0].split(':');
-  final period = parts[1].toUpperCase();
-
-  int hour = int.parse(timeParts[0]);
-  int minute = int.parse(timeParts[1]);
-
-  // Convert to 24-hour format if it's PM
-  if (period == 'PM' && hour != 12) {
-    hour += 12;
-  } else if (period == 'AM' && hour == 12) {
-    hour = 0; // Midnight case
-  }
-
-  return TimeOfDay(hour: hour, minute: minute);
+  // To combine this time with today's date:
+  DateTime now = DateTime.now();
+  return DateTime(
+    now.year,
+    now.month,
+    now.day,
+    timeDate.hour,
+    timeDate.minute,
+  );
 }

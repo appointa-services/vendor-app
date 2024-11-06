@@ -8,11 +8,11 @@ class LoginScreen extends GetWidget<AuthController> {
     Helper.lightTheme();
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
-      title: AppStrings.welcomback,
+      title: AppStrings.welcomeBack,
       desc: AppStrings.gladToMeet,
       children: [
         (size.height * 0.1).vertical(),
-        CommonTextfield(
+        CommonTextField(
           controller: controller.email,
           hintText: AppStrings.emailAddress,
           prefixIcon: AppAssets.emailIc,
@@ -20,14 +20,14 @@ class LoginScreen extends GetWidget<AuthController> {
         ),
         GetBuilder<AuthController>(
           builder: (controller) {
-            return CommonTextfield(
+            return CommonTextField(
               controller: controller.pass,
               textInputAction: TextInputAction.done,
               hintText: AppStrings.password,
               prefixIcon: AppAssets.passIc,
               suffixIcon: controller.obscureText
-                  ? Icons.remove_red_eye_outlined
-                  : Icons.remove_red_eye,
+                  ? Icons.remove_red_eye
+                  : Icons.remove_red_eye_outlined,
               obscureText: controller.obscureText,
               keyboardType: TextInputType.visiblePassword,
               onPressed: () {
@@ -79,7 +79,7 @@ class LoginScreen extends GetWidget<AuthController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const S14Text(
-              AppStrings.dontHaveAcc,
+              AppStrings.donTHaveAcc,
               color: AppColor.grey80,
             ),
             GestureDetector(

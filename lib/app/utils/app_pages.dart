@@ -10,11 +10,6 @@ class AppPages {
       page: () => const SplashScreen(),
     ),
     getPage(
-      name: AppRoutes.adminHome,
-      binding: AdminBinding(),
-      page: () => const AdminHomeScreen(),
-    ),
-    getPage(
       name: AppRoutes.detailScreen,
       page: () => const DetailScreen(),
     ),
@@ -45,33 +40,50 @@ class AppPages {
       binding: DashboardBinding(),
     ),
     getPage(
-      name: AppRoutes.clientScreen,
-      binding: ProfileBinding(),
-      page: () => const ClientListingScreen(),
+      name: AppRoutes.vendorScreen,
+      page: () => const VendorScreen(),
+      binding: VendorBinding(),
     ),
     getPage(
-      name: AppRoutes.addClientScreen,
-      page: () => const AddClientScreen(),
+      name: AppRoutes.serviceList,
+      page: () => const ServiceListingPage(),
+    ),
+    getPage(
+      name: AppRoutes.bookService,
+      page: () => const BookServiceScreen(),
+    ),
+    getPage(
+      name: AppRoutes.bookingCheckout,
+      page: () => const CheckoutScreen(),
+    ),
+    getPage(
+      name: AppRoutes.profileScreen,
+      binding: ProfileBinding(),
+      page: () => const ProfileScreen(),
+    ),
+    getPage(
+      name: AppRoutes.editProfileScreen,
+      page: () => const EditProfile(),
+    ),
+    getPage(
+      name: AppRoutes.favouriteScreen,
+      page: () => const FavouriteScreen(),
     ),
     getPage(
       name: AppRoutes.commonDocScreen,
       page: () => const CommonDocScreen(),
     ),
     getPage(
+      name: AppRoutes.productListingScreen,
+      page: () => const ProductListingScreen(),
+    ),
+    getPage(
       name: AppRoutes.searchScreen,
       page: () => const SearchScreen(),
     ),
     getPage(
-      name: AppRoutes.addBusinessScreen,
-      page: () => const AddBusinessDetail(),
-    ),
-    getPage(
-      name: AppRoutes.clientDetailScreen,
-      page: () => const ClientDetailScreen(),
-    ),
-    getPage(
-      name: AppRoutes.addStaffMember,
-      page: () => const AddStaffScreen(),
+      name: AppRoutes.bookingSearchScreen,
+      page: () => const BookServiceScreen(),
     ),
   ];
 
@@ -87,9 +99,3 @@ class AppPages {
         transition: Transition.rightToLeftWithFade,
       );
 }
-
-Future<void> pushPage(Widget page) async => Get.to(
-      page,
-      curve: Curves.linear,
-      transition: Transition.rightToLeftWithFade,
-    );
