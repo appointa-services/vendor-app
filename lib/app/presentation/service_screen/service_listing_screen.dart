@@ -1,8 +1,10 @@
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
+import 'package:salon_user/data_models/vendor_data_models.dart';
 
 class ServiceListingScreen extends StatefulWidget {
   final bool isSettingScreen;
+
   const ServiceListingScreen({super.key, this.isSettingScreen = false});
 
   @override
@@ -10,8 +12,10 @@ class ServiceListingScreen extends StatefulWidget {
 }
 
 class _ServiceListingScreenState extends State<ServiceListingScreen> {
-  ServiceController controller = Get.put(ServiceController(), permanent: true);
+  ServiceController controller = Get.put(ServiceController());
   RefreshController refreshController = RefreshController();
+  DashboardController dashboardController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,48 +67,60 @@ class _ServiceListingScreenState extends State<ServiceListingScreen> {
             15.vertical(),
             CommonSearchFiled(
               hintText: "Search Service",
-              onSearch: (search) {},
+              onSearch: (search) {
+                controller
+                  ..isSearch.value = true
+                  ..filterUser(search);
+              },
+              onClose: () {
+                controller.isSearch.value = false;
+              },
             ),
             10.vertical(),
-            GetBuilder<ServiceController>(
-              builder: (controller) {
-                return Expanded(
-                  child: SmartRefresher(
-                    controller: refreshController,
-                    onRefresh: () async {
-                      await controller.getServiceList();
-                      refreshController.refreshCompleted();
-                    },
-                    child: (controller.serviceList.isEmpty &&
-                            !controller.isServiceLoad)
-                        ? const Center(
-                            child: S14Text("No services found"),
-                          )
-                        : ListView.builder(
-                            itemCount: controller.isServiceLoad
-                                ? 10
-                                : controller.serviceList.length,
-                            padding: const EdgeInsets.only(bottom: 60),
-                            itemBuilder: (context, index) {
-                              return ServiceWidget(
-                                isLoad: controller.isServiceLoad,
-                                serviceData: controller.isServiceLoad
-                                    ? null
-                                    : controller.serviceList[index],
-                                onTap: () {
-                                  if (widget.isSettingScreen) {
-                                    controller.assignData(index);
-                                    pushPage(const AddUpdateServiceScreen());
-                                  } else {
-                                    Get.back(result: true);
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                  ),
-                );
-              },
+            Obx(
+              () => Expanded(
+                child: SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: () async {
+                    await dashboardController.getServiceList();
+                    refreshController.refreshCompleted();
+                  },
+                  child: (dashboardController.serviceList.isEmpty &&
+                          !dashboardController.isServiceLoad.value)
+                      ? const Center(
+                          child: S14Text("No services found"),
+                        )
+                      : ListView.builder(
+                          itemCount: dashboardController.isServiceLoad.value
+                              ? 10
+                              : controller.isSearch.value
+                                  ? controller.filterServiceList.length
+                                  : dashboardController.serviceList.length,
+                          padding: const EdgeInsets.only(bottom: 60),
+                          itemBuilder: (context, index) {
+                            ServiceModel? data = dashboardController
+                                    .isServiceLoad.value
+                                ? null
+                                : controller.isSearch.value
+                                    ? controller.filterServiceList[index]
+                                    : dashboardController.serviceList[index];
+                            return ServiceWidget(
+                              isLoad: dashboardController.isServiceLoad.value,
+                              serviceData: data,
+                              onTap: () {
+                                if (widget.isSettingScreen) {
+                                  Get.find<ServiceController>()
+                                      .assignData(index);
+                                  pushPage(const AddUpdateServiceScreen());
+                                } else {
+                                  Get.back(result: data);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                ),
+              ),
             ),
           ],
         ),

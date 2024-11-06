@@ -7,9 +7,10 @@ class UserModel {
   final String email;
   final String name;
   final String? image;
-  final String? mobile;
+  final String mobile;
   final String? password;
   final bool isGoogle;
+  final bool isUserByVendor;
   final BusinessModel? businessData;
 
   UserModel({
@@ -17,9 +18,10 @@ class UserModel {
     required this.email,
     required this.name,
     this.image,
-    this.mobile,
+    required this.mobile,
     this.password,
     this.isGoogle = false,
+    this.isUserByVendor = false,
     this.businessData,
   });
 
@@ -36,6 +38,7 @@ class UserModel {
                 json[DatabaseKey.businessData],
               ),
         isGoogle: json[DatabaseKey.isGoogle],
+        isUserByVendor: json[DatabaseKey.isUserByVendor] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,9 +46,10 @@ class UserModel {
         DatabaseKey.email: email,
         if (image != null) DatabaseKey.image: image,
         DatabaseKey.name: name,
-        DatabaseKey.mobile: mobile ?? "",
+        DatabaseKey.mobile: mobile,
         if (password != null) DatabaseKey.password: password,
         DatabaseKey.isGoogle: isGoogle,
+        DatabaseKey.isUserByVendor: isUserByVendor,
         if (businessData != null)
           DatabaseKey.businessData: businessData?.toJson(),
       };

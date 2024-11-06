@@ -73,14 +73,14 @@ class ChangePassScreen extends GetView<SettingController> {
                           controller: controller.cuPass,
                           hintText: "Confirm new password",
                           prefixIcon: AppAssets.passIc,
-                          suffixIcon: controller.newrePassObscureText
+                          suffixIcon: controller.newRePassObscureText
                               ? Icons.remove_red_eye_outlined
                               : Icons.remove_red_eye,
-                          obscureText: controller.newrePassObscureText,
+                          obscureText: controller.newRePassObscureText,
                           keyboardType: TextInputType.visiblePassword,
                           onPressed: () {
-                            controller.newrePassObscureText =
-                                !controller.newrePassObscureText;
+                            controller.newRePassObscureText =
+                                !controller.newRePassObscureText;
                             controller.update();
                           },
                         );

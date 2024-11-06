@@ -240,7 +240,7 @@ class CustomTimepicker extends StatefulWidget {
 }
 
 class _CustomTimepickerState extends State<CustomTimepicker> {
-  String selctedToTime = "10:00 AM";
+  String selectedToTime = "10:00 AM";
   List<String> toTimeList = [];
 
   void addTime() {
@@ -258,7 +258,7 @@ class _CustomTimepickerState extends State<CustomTimepicker> {
 
   @override
   void initState() {
-    selctedToTime = widget.selectedTime ?? "10:00 AM";
+    selectedToTime = widget.selectedTime ?? "10:00 AM";
     addTime();
     super.initState();
   }
@@ -290,8 +290,8 @@ class _CustomTimepickerState extends State<CustomTimepicker> {
                     children: [
                       VerticalPicker(
                         list: toTimeList,
-                        selectedTime: selctedToTime,
-                        onChange: (value) => setState(() => selctedToTime = value),
+                        selectedTime: selectedToTime,
+                        onChange: (value) => setState(() => selectedToTime = value),
                       ),
                     ],
                   ),
@@ -316,7 +316,7 @@ class _CustomTimepickerState extends State<CustomTimepicker> {
                           text: "Select",
                           borderRad: 10,
                           onTap: () {
-                            widget.onTimeSelect(selctedToTime);
+                            widget.onTimeSelect(selectedToTime);
                             Get.back();
                           },
                         ),

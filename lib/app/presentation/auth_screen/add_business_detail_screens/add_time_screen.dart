@@ -12,10 +12,9 @@ class AddTimeScreen extends StatelessWidget {
             backgroundColor: AppColor.white,
             bottomNavigationBar: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.all(p16),
+                padding: const EdgeInsets.all(p16) + bottomPad,
                 child: CommonBtn(
                   text: "Save",
-                  borderRad: 10,
                   onTap: () => controller.addBusinessDetail(context),
                 ),
               ),

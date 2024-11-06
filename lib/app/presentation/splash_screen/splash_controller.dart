@@ -30,7 +30,7 @@ class SplashController extends GetxController {
               (value as Map).forEach(
                 (key, value) async {
                   UserModel user = UserModel.fromMap(value as Map);
-                  user.toString().print();
+                  user.toString().print;
                   Pref.setString(Pref.userData, user.toString());
                   if (user.businessData == null) {
                     Get.offAllNamed(AppRoutes.addBusinessScreen);

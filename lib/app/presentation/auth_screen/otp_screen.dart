@@ -9,7 +9,7 @@ class OtpScreen extends GetWidget<AuthController> {
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
       title: AppStrings.emailVerification,
-      desc: AppStrings.pleaeTypeOtp,
+      desc: AppStrings.pleaseTypeOtp,
       isClear: true,
       isBack: true,
       onTap: () => Get.back(),

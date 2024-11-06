@@ -1,7 +1,11 @@
 import 'package:salon_user/app/utils/all_dependency.dart';
 
 class PaymentOptionWidget extends StatelessWidget {
-  const PaymentOptionWidget({super.key});
+  final String price;
+  final String bookingId;
+
+  const PaymentOptionWidget(
+      {super.key, required this.price, required this.bookingId});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class PaymentOptionWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      controller.isPymentScreen = false;
+                      controller.isPaymentScreen = false;
                       controller.update();
                     },
                     child: const Icon(Icons.arrow_back_rounded),
@@ -76,9 +80,19 @@ class PaymentOptionWidget extends StatelessWidget {
               ),
               50.vertical(),
               CommonBtn(
-                text: "${AppStrings.rupee} 150  •  Continue",
+                text: "${AppStrings.rupee} $price  •  Continue",
                 borderRad: 10,
-                onTap: () => Get.back(),
+                onTap: () {
+                  if (controller.paymentOption.isEmpty) {
+                    showSnackBar("Please select payment method");
+                  } else {
+                    controller.changeBookingStatus(
+                      bookingId,
+                      AppStrings.completed,
+                      method: controller.paymentOption,
+                    );
+                  }
+                },
               ),
             ],
           );

@@ -65,7 +65,7 @@ class SettingScreen extends StatelessWidget {
                 ),
                 settingWidget(
                   icon: AppAssets.scheduleManagementIc,
-                  title: AppStrings.secheduleManagement,
+                  title: AppStrings.scheduleManagement,
                   desc: AppStrings.editUrHr,
                   onTap: () {
                     authController.isSettingScreen = true;
@@ -105,7 +105,7 @@ class SettingScreen extends StatelessWidget {
                     CommonDialog(
                       title: AppStrings.logout,
                       desc: AppStrings.areUSureLogout,
-                      yesbtnString: AppStrings.yesLogout,
+                      yesBtnString: AppStrings.yesLogout,
                       onYesTap: () async {
                         await authController.logout().then(
                               (value) => Get.offAllNamed(
@@ -125,7 +125,7 @@ class SettingScreen extends StatelessWidget {
                     CommonDialog(
                       title: AppStrings.deleteAcc,
                       desc: AppStrings.areUSureDelete,
-                      yesbtnString: AppStrings.yesDelete,
+                      yesBtnString: AppStrings.yesDelete,
                       onYesTap: () => Get.offAllNamed(AppRoutes.loginScreen),
                     ),
                   ),

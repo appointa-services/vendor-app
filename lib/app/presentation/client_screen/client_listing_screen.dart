@@ -1,12 +1,17 @@
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
+import 'package:salon_user/data_models/user_model.dart';
 
 class ClientListingScreen extends StatelessWidget {
   final bool isBack;
+
   const ClientListingScreen({super.key, this.isBack = false});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ClientController());
+    RefreshController refreshController = RefreshController();
+    DashboardController dashboardController = Get.find();
+    ClientController controller = Get.put(ClientController());
     return Scaffold(
       floatingActionButton: isBack
           ? null
@@ -60,24 +65,55 @@ class ClientListingScreen extends StatelessWidget {
             15.vertical(),
             CommonSearchFiled(
               hintText: "Search Client",
-              onSearch: (search) {},
+              onSearch: (search) {
+                controller
+                  ..isSearch.value = true
+                  ..filterUser(search);
+              },
+              onClose: () {
+                controller.isSearch.value = false;
+              },
             ),
             10.vertical(),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                padding: const EdgeInsets.only(top: 10),
-                itemBuilder: (context, index) {
-                  return ClientWidget(
-                    onTap: () {
-                      if (isBack) {
-                        Get.back(result: true);
-                      } else {
-                        Get.toNamed(AppRoutes.clientDetailScreen);
-                      }
-                    },
-                  );
+              child: SmartRefresher(
+                controller: refreshController,
+                onRefresh: () {
+                  refreshController.refreshCompleted();
+                  dashboardController.getUserList();
                 },
+                child: Obx(
+                  () => ListView.builder(
+                    itemCount: dashboardController.isUserLoad.value
+                        ? 10
+                        : controller.isSearch.value
+                            ? controller.filterUserList.length
+                            : dashboardController.userList.length,
+                    padding: const EdgeInsets.only(top: 10),
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      UserModel? user = dashboardController.isUserLoad.value
+                          ? null
+                          : controller.isSearch.value
+                              ? controller.filterUserList[index]
+                              : dashboardController.userList[index];
+                      return ClientWidget(
+                        isLoad: dashboardController.isUserLoad.value,
+                        data: user,
+                        onTap: () {
+                          if (isBack) {
+                            Get.back(result: user);
+                          } else {
+                            controller
+                              ..selectedUser = user!
+                              ..getBookingByUser();
+                            Get.toNamed(AppRoutes.clientDetailScreen);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],

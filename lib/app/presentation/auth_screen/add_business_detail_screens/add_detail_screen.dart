@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:salon_user/app/common_widgets/get_lat_lg.dart';
-import 'package:salon_user/app/common_widgets/image_netwok.dart';
+import 'package:salon_user/app/common_widgets/image_network.dart';
 import 'package:salon_user/app/common_widgets/img_loader.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
@@ -19,10 +19,9 @@ class AddDetailScreen extends StatelessWidget {
             backgroundColor: AppColor.white,
             bottomNavigationBar: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.all(p16),
+                padding: const EdgeInsets.all(p16) + bottomPad,
                 child: CommonBtn(
                   text: "Save",
-                  borderRad: 10,
                   onTap: () => controller.addBusinessDetail(context),
                 ),
               ),
@@ -271,7 +270,6 @@ class AddDetailScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    img.print();
                     return Stack(
                       alignment: Alignment.topRight,
                       children: [

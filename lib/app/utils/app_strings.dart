@@ -6,12 +6,12 @@ class AppStrings {
   static const String bookYrFav = "Book Your Favourite\n"
       "Barber and Salon Quickly";
   static const String comeBeHandsome = "Come be Handsome\n"
-      "and Beautifule with\nus right now!";
+      "and Beautiful with\nus right now!";
   static const String next = "Next";
   static const String getStarted = "Get Started";
 
   /// authentication screen text
-  static const String welcomback = "Welcome back,";
+  static const String welcomeBack = "Welcome back,";
   static const String gladToMeet = "Glad to meet you again!,"
       " please login to use the app.";
   static const String createAnAccount = "Create an account,";
@@ -21,19 +21,22 @@ class AppStrings {
   static const String forgotPass = "Forgot password?";
   static const String signIn = "Sign In";
   static const String signInWithGoogle = "Sign In with Google";
-  static const String dontHaveAcc = "Don't have an account? ";
+  static const String donTHaveAcc = "Don't have an account? ";
   static const String joinNow = "Join Now";
   static const String name = "Name";
-  static const String fname = "First Name";
-  static const String lname = "Last Name";
+  static const String fName = "First Name";
+  static const String lName = "Last Name";
   static const String businessName = "Business Name";
   static const String enterName = "Enter your full name";
+  static const String enterCName = "Enter your client name";
   static const String enterLName = "Enter your Last name";
   static const String enterFName = "Enter your First name";
   static const String emailAddress = "Email address";
   static const String enterEmailAddress = "Enter your email address";
+  static const String enterCEmailAddress = "Enter client email address";
   static const String mobileNumber = "Mobile number";
   static const String enterMobileNumber = "Enter your mobile number";
+  static const String enterCMobileNumber = "Enter client mobile number";
   static const String dob = "Date of Birth";
   static const String enterDob = "Enter your date of birth";
   static const String selectGender = "Select your gender";
@@ -51,7 +54,7 @@ class AppStrings {
   static const String fPass = "Forgot password,";
   static const String sendCode = "Send Code";
   static const String emailVerification = "Email verification,";
-  static const String pleaeTypeOtp = "Please type OTP code that we give you";
+  static const String pleaseTypeOtp = "Please type OTP code that we give you";
   static const String verifyEmail = "Verify Email";
   static const String resendOn = "Resend on ";
   static const String resendOtp = "Resend OTP";
@@ -62,10 +65,10 @@ class AppStrings {
   static const String newPass = "New password";
   static const String confirmNewPass = "Confirm new password";
   static const String confirmNewPassCap = "Confirm New Password";
-  static const String nowUcanCreate = "Now, you can create new password "
+  static const String nowUCanCreate = "Now, you can create new password "
       "and confirm it below";
 
-  /// add business detai screen
+  /// add business detail screen
   static const String whatServiceDoU = "What service do you offer?";
   static const String businessDetail = "Business details";
   static const String yourBusinessHr = "Your business hours";
@@ -117,7 +120,7 @@ class AppStrings {
   static const String subTotal = "Sub Total";
   static const String yesLogout = "Yes, Logout";
   static const String yesDelete = "Yes, Delete";
-  static const String cancel = "cancle";
+  static const String cancel = "cancel";
   static const String areUSureLogout = "Are you sure want to Logout?";
   static const String areUSureDelete = "Are you sure want to Delete Account?";
 
@@ -139,6 +142,7 @@ class AppStrings {
   static const String other = "Other";
   static const String update = "Update";
   static const String add = "Add";
+  static const String all = "All";
 
   /// booking screen text
   static const String upcoming = "Upcoming";
@@ -154,7 +158,7 @@ class AppStrings {
   /// setting screen
   static const String addBusinessDetail =
       "Add details to establish your business and adjust your location";
-  static const String secheduleManagement = "Schedule Management";
+  static const String scheduleManagement = "Schedule Management";
   static const String staffMember = "Staff Member";
   static const String manageMember = "Manage your staff for you business";
   static const String editUrHr =
@@ -194,7 +198,7 @@ class AppStrings {
   static const String enterPass = "Please enter password";
   static const String enterConPass = "Please enter confirm password";
   static const String passNotMatch =
-      "Pasword and confirm password are not match";
+      "Password and confirm password are not match";
   static const String enterValidPass = "Please enter at least 6 digit password";
   static const String userNot = "User not found";
   static const String enteredEmailGoogle =

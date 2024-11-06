@@ -123,10 +123,11 @@ class CommonTextfield extends StatelessWidget {
 class CommonSearchFiled extends StatefulWidget {
   final String hintText;
   final Function(String search) onSearch;
+  final Function() onClose;
   const CommonSearchFiled({
     super.key,
     required this.hintText,
-    required this.onSearch,
+    required this.onSearch, required this.onClose,
   });
 
   @override
@@ -157,7 +158,10 @@ class _CommonSearchFiledState extends State<CommonSearchFiled> {
               color: AppColor.grey100,
             ),
             cursorHeight: 20,
-            onChanged: (value) => setState(() => search = value),
+            onChanged: (value) {
+              widget.onSearch(value);
+              setState(() => search = value);
+            },
             decoration: InputDecoration(
               isDense: true,
               hintText: widget.hintText,
@@ -198,7 +202,7 @@ class _CommonSearchFiledState extends State<CommonSearchFiled> {
                   focusNode.unfocus();
                   searchController.clear();
                 });
-                widget.onSearch("");
+                widget.onClose();
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(

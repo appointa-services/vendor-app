@@ -4,6 +4,7 @@ import 'package:salon_user/data_models/vendor_data_models.dart';
 class AddIntervalScreen extends StatefulWidget {
   final IntervalModel data;
   final int index;
+
   const AddIntervalScreen({super.key, required this.data, required this.index});
 
   @override
@@ -12,6 +13,7 @@ class AddIntervalScreen extends StatefulWidget {
 
 class _AddIntervalScreenState extends State<AddIntervalScreen> {
   AuthController controller = Get.find<AuthController>();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -27,7 +29,7 @@ class _AddIntervalScreenState extends State<AddIntervalScreen> {
           widget.data.isClosed ? [] : widget.data.data?.breakList ?? [];
       controller.update();
     });
-    "-->>>> ${widget.data.toJson()}".print();
+    "-->>>> ${widget.data.toJson()}".print;
     super.initState();
   }
 
@@ -41,50 +43,46 @@ class _AddIntervalScreenState extends State<AddIntervalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(p16),
-            child: GetBuilder<AuthController>(
-              builder: (controller) {
-                return CommonBtn(
-                  borderRad: 10,
-                  borderColor: AppColor.grey100,
-                  btnColor: AppColor.grey100,
-                  text: AppStrings.ok,
-                  onTap: () {
-                    if (compareTimes(
-                      controller.selectedStartTime,
-                      controller.selectedEndTime,
-                    )) {
-                      IntervalModel data = IntervalModel(
-                        day: widget.data.day,
-                        isClosed: controller.isClose,
-                        data: controller.isClose
-                            ? null
-                            : DayDatModel(
-                                startTime: controller.selectedStartTime,
-                                endTime: controller.selectedEndTime,
-                                breakList: controller.breaksList,
-                              ),
-                      );
-                      controller
-                        ..intervalList.removeAt(widget.index)
-                        ..intervalList.insert(widget.index, data)
-                        ..update();
-                      Get.back();
-                    } else {
-                      showSnackBar(
-                        "The start time must be later than the end time.",
-                      );
-                    }
-                  },
-                );
-              },
-            ),
+      bottomNavigationBar: IntrinsicHeight(
+        child: Padding(
+          padding: const EdgeInsets.all(p16) + bottomPad,
+          child: GetBuilder<AuthController>(
+            builder: (controller) {
+              return CommonBtn(
+                borderColor: AppColor.grey100,
+                btnColor: AppColor.grey100,
+                text: "Save",
+                onTap: () {
+                  if (compareTimes(
+                    controller.selectedStartTime,
+                    controller.selectedEndTime,
+                  )) {
+                    IntervalModel data = IntervalModel(
+                      day: widget.data.day,
+                      isClosed: controller.isClose,
+                      data: controller.isClose
+                          ? null
+                          : DayDatModel(
+                              startTime: controller.selectedStartTime,
+                              endTime: controller.selectedEndTime,
+                              breakList: controller.breaksList,
+                            ),
+                    );
+                    controller
+                      ..intervalList.removeAt(widget.index)
+                      ..intervalList.insert(widget.index, data)
+                      ..update();
+                    Get.back();
+                  } else {
+                    showSnackBar(
+                      "The start time must be later than the end time.",
+                    );
+                  }
+                },
+              );
+            },
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: Column(

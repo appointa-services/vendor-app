@@ -37,11 +37,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB94LrAQV56ZRdgGs-3yuTukl3Vi50ZVGw',
-    appId: '1:762438574934:ios:4586a6666f3d58969decf7',
+    apiKey: 'AIzaSyBBICZYa-hqM6qRzH5F5LM0sNfpfCTpQTI',
+    appId: '1:212237749630:ios:63ae0c5f11d0d64452f72f',
     messagingSenderId: '212237749630',
-    projectId: 'ydsusa',
+    projectId: 'saloon-ae3be',
     storageBucket: 'saloon-ae3be.appspot.com',
-    iosBundleId: 'com.app.r-wings',
+    iosBundleId: 'com.salonvendorapp.mobile',
   );
 }

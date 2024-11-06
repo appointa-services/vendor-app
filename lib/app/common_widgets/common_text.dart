@@ -101,6 +101,7 @@ class S14Text extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? color;
   final int? maxLines;
+  final bool isUnderline;
 
   const S14Text(
     this.text, {
@@ -109,6 +110,7 @@ class S14Text extends StatelessWidget {
     this.fontWeight,
     this.color,
     this.maxLines,
+    this.isUnderline = false,
   });
 
   @override
@@ -123,6 +125,7 @@ class S14Text extends StatelessWidget {
         fontSize: 14,
         height: 1.2,
         color: color ?? AppColor.grey80,
+        decoration: isUnderline ? TextDecoration.underline : null,
       ),
     );
   }

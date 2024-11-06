@@ -8,7 +8,7 @@ class LoginScreen extends GetWidget<AuthController> {
     Helper.lightTheme();
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
-      title: AppStrings.welcomback,
+      title: AppStrings.welcomeBack,
       desc: AppStrings.gladToMeet,
       children: [
         (size.height * 0.1).vertical(),
@@ -79,7 +79,7 @@ class LoginScreen extends GetWidget<AuthController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const S14Text(
-              AppStrings.dontHaveAcc,
+              AppStrings.donTHaveAcc,
               color: AppColor.grey80,
             ),
             GestureDetector(

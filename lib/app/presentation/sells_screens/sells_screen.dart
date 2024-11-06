@@ -1,11 +1,13 @@
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
+import '../../common_widgets/image_network.dart';
 
-class SellsScreen extends StatelessWidget {
+class SellsScreen extends GetView<SellsController> {
   const SellsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SellsController());
+    RefreshController refreshController = RefreshController();
     return Padding(
       padding: EdgeInsets.fromLTRB(
         p16,
@@ -22,195 +24,188 @@ class SellsScreen extends StatelessWidget {
           ),
           15.vertical(),
           Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                SizedBox(
-                  height: 35,
-                  child: GetBuilder<SellsController>(
-                    builder: (controller) {
-                      return ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.zero,
-                        children: [
-                          pageViewBtn(
-                            title: AppStrings.today,
-                            isSelected:
-                                controller.selectedTime == AppStrings.today,
-                            onTap: () {
-                              controller.selectedTime = AppStrings.today;
-                              controller.update();
-                            },
-                          ),
-                          pageViewBtn(
-                            title: AppStrings.weekly,
-                            isSelected:
-                                controller.selectedTime == AppStrings.weekly,
-                            onTap: () {
-                              controller.selectedTime = AppStrings.weekly;
-                              controller.update();
-                            },
-                          ),
-                          pageViewBtn(
-                            title: AppStrings.monthly,
-                            isSelected:
-                                controller.selectedTime == AppStrings.monthly,
-                            onTap: () {
-                              controller.selectedTime = AppStrings.monthly;
-                              controller.update();
-                            },
-                          ),
-                          pageViewBtn(
-                            title: AppStrings.yearly,
-                            isSelected:
-                                controller.selectedTime == AppStrings.yearly,
-                            onTap: () {
-                              controller.selectedTime = AppStrings.yearly;
-                              controller.update();
-                            },
-                          ),
-                          pageViewBtn(
-                            title: AppStrings.upcoming,
-                            isSelected:
-                                controller.selectedTime == AppStrings.upcoming,
-                            onTap: () {
-                              controller.selectedTime = AppStrings.upcoming;
-                              controller.update();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                10.vertical(),
-                GetBuilder<SellsController>(
-                  builder: (controller) {
-                    return DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppColor.primaryColor),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: pageViewBtn(
-                                isType: true,
-                                title: AppStrings.byEmployee,
-                                isSelected: controller.selectedType ==
-                                    AppStrings.byEmployee,
-                                onTap: () {
-                                  controller.selectedType =
-                                      AppStrings.byEmployee;
-                                  controller.update();
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              child: pageViewBtn(
-                                isType: true,
-                                title: AppStrings.byService,
-                                isSelected: controller.selectedType ==
-                                    AppStrings.byService,
-                                onTap: () {
-                                  controller.selectedType =
-                                      AppStrings.byService;
-                                  controller.update();
-                                },
-                              ),
-                            ),
-                          ],
+            child: Obx(
+              () {
+                bool isEmployee =
+                    controller.selectedType.value == AppStrings.byEmployee;
+                return SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: () async {
+                    await Get.find<DashboardController>().getAllData();
+                    await Get.find<HomeController>().getBooking();
+                    refreshController.refreshCompleted();
+                  },
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    primary: false,
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: GetBuilder<SellsController>(
+                          builder: (controller) {
+                            return ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.zero,
+                              children: [
+                                AppStrings.today,
+                                AppStrings.weekly,
+                                AppStrings.monthly,
+                                AppStrings.yearly,
+                                AppStrings.upcoming,
+                              ]
+                                  .map((e) => pageViewBtn(
+                                        title: e,
+                                        isSelected:
+                                            controller.selectedTime.value == e,
+                                        onTap: () => controller.changeDate(e),
+                                      ))
+                                  .toList(),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  },
-                ),
-                GetBuilder<SellsController>(
-                  builder: (controller) {
-                    bool isEmployee =
-                        controller.selectedType == AppStrings.byEmployee;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return IntrinsicHeight(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: Row(
-                              children: [
-                                if (isEmployee)
-                                  const CircleAvatar(
-                                    backgroundColor: AppColor.grey20,
-                                    backgroundImage:
-                                        AssetImage(AppAssets.dummyPerson1),
-                                  ),
-                                const VerticalDivider(thickness: 2, width: 20),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      S16Text(
-                                        isEmployee
-                                            ? "Employee name"
-                                            : "Service name",
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      3.vertical(),
-                                      if (isEmployee)
-                                        const DualText(
-                                            text1: "Assigned service",
-                                            text2: "5"),
-                                      if (isEmployee) 1.5.vertical(),
-                                      const DualText(
-                                          text1: "Total appointment",
-                                          text2: "10"),
-                                    ],
-                                  ),
-                                ),
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SText(
-                                      "Total",
-                                      size: 10,
-                                      color: AppColor.grey80,
+                      10.vertical(),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColor.primaryColor),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Row(
+                            children: [
+                              AppStrings.byEmployee,
+                              AppStrings.byService,
+                            ]
+                                .map(
+                                  (e) => Expanded(
+                                    child: pageViewBtn(
+                                      isType: true,
+                                      title: e,
+                                      isSelected:
+                                          controller.selectedType.value == e,
+                                      onTap: () {
+                                        controller.selectedType.value = e;
+                                        controller.update();
+                                      },
                                     ),
-                                    S16Text(
-                                      "${AppStrings.rupee} 100",
-                                      color: AppColor.grey100,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ],
+                                  ),
                                 )
-                              ],
-                            ),
+                                .toList(),
                           ),
-                        );
-                      },
-                    );
-                  },
-                )
-              ],
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        padding: const EdgeInsets.only(top: 20),
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: isEmployee
+                            ? controller.byEmpList.length
+                            : controller.bySerList.length,
+                        itemBuilder: (context, index) {
+                          ByServiceModel? service;
+                          ByEmployeeModel? employee;
+                          if (isEmployee) {
+                            employee = controller.byEmpList[index];
+                          } else {
+                            service = controller.bySerList[index];
+                          }
+                          return IntrinsicHeight(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: Row(
+                                children: [
+                                  if (isEmployee)
+                                    ClipOval(
+                                      child: ImageNet(
+                                        employee?.employeeImg ?? "",
+                                        height: 40,
+                                        width: 40,
+                                      ),
+                                    ),
+                                  const VerticalDivider(
+                                    thickness: 2,
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        S16Text(
+                                          isEmployee
+                                              ? employee?.employeeName ??
+                                                  "Staff"
+                                              : service?.serviceName ??
+                                                  "Service",
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        3.vertical(),
+                                        if (isEmployee)
+                                          DualText(
+                                            text1: "Assigned service",
+                                            text2:
+                                                employee?.assignService ?? "1",
+                                          ),
+                                        if (isEmployee) 1.5.vertical(),
+                                        DualText(
+                                          text1: "Total appointment",
+                                          text2: employee?.totalAppointment ??
+                                              service?.totalAppointment ??
+                                              "1",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SText(
+                                        "Total",
+                                        size: 10,
+                                        color: AppColor.grey80,
+                                      ),
+                                      S16Text(
+                                        "${AppStrings.rupee} "
+                                        "${employee?.totalPrice ?? service?.totalPrice ?? ""}",
+                                        color: AppColor.grey100,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                S12Text("Total revenue:"),
-                SText(
-                  "${AppStrings.rupee} 1000",
-                  size: 20,
-                  fontWeight: FontWeight.w700,
-                )
-              ],
-            ),
+          Obx(
+            () {
+              return controller.totalRevenue.value == 0
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const S12Text("Total revenue:"),
+                          SText(
+                            "${AppStrings.rupee} ${controller.totalRevenue.value}",
+                            size: 20,
+                            fontWeight: FontWeight.w700,
+                          )
+                        ],
+                      ),
+                    );
+            },
           ),
         ],
       ),

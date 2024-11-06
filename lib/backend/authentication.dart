@@ -66,13 +66,13 @@ class AuthenticationApiClass {
       }
     } on Exception catch (e) {
       response = LoginResponse(isError: true);
-      ('login exception -> $e').print();
+      ('login exception -> $e').print;
     }
     Loader.dismiss();
     return response;
   }
 
-  /// signin with google
+  /// sig in n with google
   static Future<UserModel?> signInWithGoogle() async {
     Loader.show();
     UserModel? finalUser;
@@ -86,6 +86,7 @@ class AuthenticationApiClass {
         if (userData == null) {
           UserModel data = UserModel(
             email: googleUser.email,
+            mobile: "",
             image: googleUser.photoUrl ?? "",
             name: googleUser.displayName ?? "",
             isGoogle: true,
@@ -100,14 +101,14 @@ class AuthenticationApiClass {
           user.addAll({DatabaseKey.id: orderRef.key});
           finalUser = UserModel.fromMap(user);
         } else {
-          "-->> google user $userData".print();
+          "-->> google user $userData".print;
           (userData as Map).forEach((key, value) {
             finalUser = UserModel.fromMap(value);
           });
         }
       }
     } on Exception catch (e) {
-      ('signin with google exception -> $e').print();
+      ('sign in with google exception -> $e').print;
     }
     Loader.dismiss();
     return finalUser;
@@ -144,7 +145,7 @@ class AuthenticationApiClass {
         isExist = true;
       }
     } catch (e) {
-      'sendOtp exception $e'.print();
+      'sendOtp exception $e'.print;
     }
     Loader.dismiss();
     return (otpSent, isExist, finalUser);
@@ -173,7 +174,7 @@ class AuthenticationApiClass {
         finalUser = UserModel.fromMap(user);
       }
     } catch (e) {
-      'verifyOtp exception $e'.print();
+      'verifyOtp exception $e'.print;
     }
     Loader.dismiss();
     return (verifyOtp, finalUser);
@@ -188,7 +189,7 @@ class AuthenticationApiClass {
       ).then((value) => isUpdate = true);
     } catch (e) {
       isUpdate = false;
-      'resetPass exception $e'.print();
+      'resetPass exception $e'.print;
     }
     Loader.dismiss();
     return isUpdate;

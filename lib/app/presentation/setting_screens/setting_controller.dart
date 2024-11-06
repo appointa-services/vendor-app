@@ -19,7 +19,7 @@ class SettingController extends GetxController {
   TextEditingController cuPass = TextEditingController();
   bool obscureText = true;
   bool newObscureText = true;
-  bool newrePassObscureText = true;
+  bool newRePassObscureText = true;
   String selectedType = AppStrings.profile;
   String docScreen = AppStrings.aboutUs;
 

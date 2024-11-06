@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:crypt/crypt.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salon_user/app/helper/shared_pref.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
@@ -29,7 +29,7 @@ class AuthController extends GetxController {
   TextEditingController businessName = TextEditingController();
   TextEditingController businessDesc = TextEditingController();
   TextEditingController businessAddress = TextEditingController();
-  LatLng? latLng;
+  var latLng;
   String? teamSize;
   List businessImgList = [];
   String? businessLogo;
@@ -90,7 +90,7 @@ class AuthController extends GetxController {
         otpTime--;
         update();
       } else {
-        "-->>> $otpTime".print();
+        "-->>> $otpTime".print;
         timer!.cancel();
         update();
       }
@@ -129,7 +129,7 @@ class AuthController extends GetxController {
         } else if (response.data != null) {
           if (response.data!.password != null) {
             Pref.setString(Pref.userData, response.data!.toString());
-            Pref.setString(Pref.emailKey, response.data!.email);
+            Pref.setString(Pref.emailKey, response.data?.email ?? "");
             if (response.data!.businessData != null) {
               Get.offAllNamed(AppRoutes.dashboardScreen);
             } else {
@@ -140,7 +140,7 @@ class AuthController extends GetxController {
           }
         } else if (response.isAdmin) {
           Pref.setString(Pref.emailKey, email.text);
-          Pref.setbBool(Pref.isAdminKey, true);
+          Pref.setBool(Pref.isAdminKey, true);
           Get.offAllNamed(AppRoutes.adminHome);
         } else {
           showSnackBar(AppStrings.userNot);
@@ -153,9 +153,9 @@ class AuthController extends GetxController {
     Loader.show();
     UserModel? data = await AuthenticationApiClass.signInWithGoogle();
     if (data != null) {
-      "--->>> encrypted user ${data.toString()}".print();
+      "--->>> encrypted user ${data.toString()}".print;
       Pref.setString(Pref.userData, data.toString());
-      Pref.setString(Pref.emailKey, data.email);
+      Pref.setString(Pref.emailKey, data.email ?? "");
       if (data.businessData == null) {
         Get.offAllNamed(AppRoutes.addBusinessScreen);
       } else {
@@ -243,7 +243,7 @@ class AuthController extends GetxController {
         if (value.$1) {
           if (isRegister) {
             Pref.setString(Pref.userData, data.toString());
-            Pref.setString(Pref.emailKey, data.email);
+            Pref.setString(Pref.emailKey, data.email ?? "");
           }
           if (timer != null) {
             timer!.cancel();
@@ -351,7 +351,7 @@ class AuthController extends GetxController {
   }) async {
     /// get user data
     UserModel? userData;
-    (await Pref.getString(Pref.userData)).print();
+    (await Pref.getString(Pref.userData)).print;
     Map<String, dynamic> user = jsonDecode(await Pref.getString(Pref.userData));
     userData = UserModel.fromMap(user);
 
@@ -434,9 +434,9 @@ class AuthController extends GetxController {
       });
     }
     Pref.setString(Pref.userData, jsonEncode(userModel));
-    userModel.toString().print();
+    userModel.toString().print;
 
-    await AddGetVendorData.updateBusimessDetail(
+    await AddGetVendorData.updateBusinessDetail(
       businessModel,
       userData?.id ?? "",
     ).then((value) {
@@ -463,14 +463,12 @@ class AuthController extends GetxController {
     businessName.text = businessData?.businessName ?? "";
     businessDesc.text = businessData?.businessDesc ?? "";
     businessAddress.text = businessData?.businessAddress ?? "";
-    latLng = LatLng(
-      businessData?.latitude ?? 21.1702,
-      businessData?.longitude ?? 72.8311,
-    );
+    // latLng = LatLng(
+    //   businessData?.latitude ?? 21.1702,
+    //   businessData?.longitude ?? 72.8311,
+    // );
     teamSize = businessData?.teamSize;
     businessLogo = businessData?.logo;
-    debugPrint(
-        "-->>> here assgin data ${businessData?.logo} -->> ${businessData?.images}");
     businessImgList = businessData?.images ?? [];
     if (businessData?.intervalList != null) {
       intervalList = businessData!.intervalList;

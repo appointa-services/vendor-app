@@ -8,6 +8,7 @@ class ServiceWidget extends StatelessWidget {
   final bool isSelect;
   final bool isLoad;
   final ServiceModel? serviceData;
+
   const ServiceWidget({
     super.key,
     required this.onTap,
@@ -68,8 +69,7 @@ class ServiceWidget extends StatelessWidget {
                     ),
                   if (serviceData != null)
                     S12Text(
-                      Get.find<ServiceController>()
-                          .timeToString(serviceData.serviceTime),
+                      timeToString(serviceData.serviceTime),
                     )
                   else
                     const LoadingWidget(height: 10, width: 80),

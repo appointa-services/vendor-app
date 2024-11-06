@@ -9,13 +9,12 @@ class AddStaffScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     StaffController controller = Get.find<StaffController>();
     return CommonAppbar(
-      title: "Add staff member",
+      title: controller.id != null ? "Edit staff member" : "Add staff member",
       bottomWidget: IntrinsicHeight(
         child: Padding(
-          padding: const EdgeInsets.all(p16),
+          padding: const EdgeInsets.all(p16) + bottomPad,
           child: CommonBtn(
-            borderRad: 10,
-            text: "Save",
+            text: controller.id != null ? AppStrings.update : "Save",
             onTap: () => controller.addStaffMember(),
           ),
         ),

@@ -65,7 +65,6 @@ export 'package:flutter/material.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:carousel_slider/carousel_slider.dart';
-export 'package:fluttertoast/fluttertoast.dart';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/gestures.dart';
 export 'package:dropdown_button2/dropdown_button2.dart';

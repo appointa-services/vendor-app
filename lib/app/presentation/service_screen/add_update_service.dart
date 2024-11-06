@@ -18,19 +18,16 @@ class AddUpdateServiceScreen extends StatelessWidget {
           ? controller.selectedService!.serviceName
           : "Add Service",
       padd: const EdgeInsets.all(p16),
-      bottomWidget: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(p16),
-            child: CommonBtn(
-              text: controller.selectedService != null
-                  ? AppStrings.update
-                  : AppStrings.add,
-              onTap: () => controller.addService(),
-            ),
+      bottomWidget: IntrinsicHeight(
+        child: Padding(
+          padding: const EdgeInsets.all(p16) + bottomPad,
+          child: CommonBtn(
+            text: controller.selectedService != null
+                ? AppStrings.update
+                : AppStrings.add,
+            onTap: () => controller.addService(),
           ),
-        ],
+        ),
       ),
       children: [
         Expanded(
@@ -141,8 +138,7 @@ class AddUpdateServiceScreen extends StatelessWidget {
                       builder: (controller) {
                         return CommonTextfield(
                           controller: TextEditingController(
-                            text:
-                                controller.timeToString(controller.serviceTime),
+                            text: timeToString(controller.serviceTime),
                           ),
                           title: AppStrings.serviceTime,
                           fontWeight: FontWeight.w600,

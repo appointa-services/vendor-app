@@ -150,9 +150,9 @@ class VendorDetailWidget extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 2,
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Column(
+              return Padding(
+                padding: bottomPad,
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(

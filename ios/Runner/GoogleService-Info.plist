@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>212237749630-bjllrt9j8ll3nl8mlnjpfqpbb79bfk28.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.212237749630-bjllrt9j8ll3nl8mlnjpfqpbb79bfk28</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>212237749630-3pc670qg8epbkdin6jtuefs3bkb8a9h7.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBICZYa-hqM6qRzH5F5LM0sNfpfCTpQTI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>212237749630</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.salonvendorapp.mobile</string>
+	<key>PROJECT_ID</key>
+	<string>saloon-ae3be</string>
+	<key>STORAGE_BUCKET</key>
+	<string>saloon-ae3be.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:212237749630:ios:63ae0c5f11d0d64452f72f</string>
+	<key>DATABASE_URL</key>
+	<string>https://saloon-ae3be-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

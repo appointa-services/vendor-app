@@ -8,7 +8,7 @@ class ResetPassScreen extends GetWidget<AuthController> {
     Size size = MediaQuery.of(context).size;
     return AuthCommonScreen(
       title: "${AppStrings.newPass},",
-      desc: AppStrings.nowUcanCreate,
+      desc: AppStrings.nowUCanCreate,
       isBack: true,
       isClear: false,
       onTap: () => Get.back(),

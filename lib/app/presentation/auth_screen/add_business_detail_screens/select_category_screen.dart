@@ -1,4 +1,4 @@
-import 'package:salon_user/app/common_widgets/image_netwok.dart';
+import 'package:salon_user/app/common_widgets/image_network.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
 import 'package:shimmer/shimmer.dart';

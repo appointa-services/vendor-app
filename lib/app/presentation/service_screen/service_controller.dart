@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:salon_user/app/presentation/dashboard/dashboard_controller.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
 import 'package:salon_user/backend/admin_backend/add_get_vendor_data.dart';
@@ -11,41 +12,16 @@ import '../../common_widgets/upload_img_dialog.dart';
 import '../../helper/shared_pref.dart';
 
 class ServiceController extends GetxController {
+  DashboardController controller = Get.find();
   UserModel? user;
   TextEditingController serviceName = TextEditingController();
   TextEditingController servicePrice = TextEditingController();
   int? serviceTime;
   TextEditingController serviceDesc = TextEditingController();
   List<String> serviceImgList = [];
-  List<ServiceModel> serviceList = [];
   ServiceModel? selectedService;
   int? index;
-  bool isServiceLoad = false;
   String? selectedCatId;
-
-  String timeToString(int? value) {
-    String time = "";
-    if (value != null) {
-      time = value ~/ 60 == 0 ? "" : "${value ~/ 60}hr ";
-      time += value.remainder(60) == 0 ? "" : "${value.remainder(60)}min";
-    }
-    return time;
-  }
-
-  Future<void> getServiceList() async {
-    serviceList.clear();
-    isServiceLoad = true;
-    update();
-    await AddGetVendorData.getServiceList(user?.id ?? "").then((value) {
-      if (value != null) {
-        serviceList.addAll(value);
-      } else {
-        showSnackBar("Unable to get your services");
-      }
-    });
-    isServiceLoad = false;
-    update();
-  }
 
   Future<void> addService() async {
     if (selectedCatId == null) {
@@ -112,13 +88,13 @@ class ServiceController extends GetxController {
     await AddGetVendorData.addService(serviceData).then((value) async {
       if (value.$1) {
         if (value.$2 != null) {
-          serviceList.add(value.$2!);
+          controller.serviceList.add(value.$2!);
         } else {
-          serviceList.removeAt(index!);
-          serviceList.insert(index!, serviceData);
+          controller.serviceList.removeAt(index!);
+          controller.serviceList.insert(index!, serviceData);
         }
         await AddGetVendorData.updateServiceName(
-          serviceList.map((e) => e.serviceName).toList(),
+          controller.serviceList.map((e) => e.serviceName).toList(),
           user?.id ?? "",
         );
         update();
@@ -144,7 +120,7 @@ class ServiceController extends GetxController {
   }
 
   assignData(int index) {
-    selectedService = serviceList[index];
+    selectedService = controller.serviceList[index];
     this.index = index;
     serviceImgList.clear();
     for (var element in selectedService!.images) {
@@ -156,7 +132,7 @@ class ServiceController extends GetxController {
     serviceTime = selectedService!.serviceTime;
     AuthController authController = Get.find<AuthController>();
     "-->> ${authController.user?.businessData?.selectedCat} - ${selectedService!.categoryId} -- $selectedCatId"
-        .print();
+        .print;
     if (authController.user?.businessData?.selectedCat
             .contains(selectedService!.categoryId) ??
         false) {
@@ -164,11 +140,31 @@ class ServiceController extends GetxController {
     }
   }
 
+  RxList<ServiceModel> filterServiceList = <ServiceModel>[].obs;
+  RxBool isSearch = false.obs;
+
+  void filterUser(String search) {
+    List<ServiceModel> staffList = Get.find<DashboardController>().serviceList;
+    filterServiceList.clear();
+    filterServiceList.addAll(staffList);
+    if (search.isNotEmpty) {
+      filterServiceList.clear();
+      for (var data in staffList) {
+        if ((data.serviceName.toLowerCase().contains(search.toLowerCase()) ||
+                data.price.contains(search.toLowerCase()) ||
+                data.serviceTime.toString().contains(search.toLowerCase())) &&
+            !filterServiceList.any((element) => element.id == data.id)) {
+          filterServiceList.add(data);
+        }
+      }
+    }
+    update();
+  }
+
   @override
   void onInit() async {
     String userData = await Pref.getString(Pref.userData);
     user = UserModel.fromMap(jsonDecode(userData));
-    getServiceList();
     super.onInit();
   }
 }

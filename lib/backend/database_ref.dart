@@ -8,4 +8,6 @@ class DatabaseRef {
   static final DatabaseReference category = data.child(DatabaseKey.category);
   static final DatabaseReference service = data.child(DatabaseKey.service);
   static final DatabaseReference staff = data.child(DatabaseKey.staff);
+  static final DatabaseReference booking = data.child(DatabaseKey.booking);
+  static final DatabaseReference user = data.child(DatabaseKey.user);
 }

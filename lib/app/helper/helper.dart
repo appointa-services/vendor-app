@@ -33,7 +33,7 @@ class Helper {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(msg: "Double tap to exit");
+      // Fluttertoast.showToast(msg: "Double tap to exit");
     } else {
       exit(0);
     }
@@ -47,9 +47,10 @@ bool emailValid(email) => RegExp(
 bool mobileValid(String mobile) =>
     RegExp(r'^(?:[+0][1-9])?[0-9]{10}$').hasMatch(mobile) &&
     RegExp(r'^[6-9]$').hasMatch(mobile[0]);
+
 bool passValid(String pass) => pass.length >= 6;
 
-/// common padd
+/// common padding
 const double p16 = 16;
 
 extension Sizedbox on dynamic {
@@ -59,12 +60,6 @@ extension Sizedbox on dynamic {
 
   SizedBox vertical() {
     return SizedBox(height: this.toDouble());
-  }
-}
-
-extension Print on dynamic {
-  void print() {
-    log(this, name: AppStrings.appName);
   }
 }
 
@@ -100,7 +95,7 @@ Future<List<String>> selectFiles() async {
   }
   if (list.length != paths.length) {
     showSnackBar(
-      "Please select upto 2mb images only",
+      "Please select up to 2mb images only",
       color: Colors.red,
     );
   }
@@ -123,7 +118,7 @@ Future<String> selectFile() async {
       paths = img.path;
     } else {
       showSnackBar(
-        "Please select upto 2mb images only",
+        "Please select up to 2mb images only",
         color: Colors.red,
       );
     }
@@ -180,4 +175,44 @@ TimeOfDay parseTime(String time) {
   }
 
   return TimeOfDay(hour: hour, minute: minute);
+}
+
+String listToString(List? list, {String? comaReplacer}) =>
+    list
+        ?.toString()
+        .replaceAll("[", "")
+        .replaceAll("]", "")
+        .replaceAll(",", comaReplacer ?? ",") ??
+    "";
+
+String timeToString(int? value) {
+  String time = "";
+  if (value != null) {
+    time = value ~/ 60 == 0 ? "" : "${value ~/ 60}hr ";
+    time += value.remainder(60) == 0 ? "" : "${value.remainder(60)}min";
+  }
+  return time;
+}
+
+Color statusColor(String status) {
+  return switch (status) {
+    AppStrings.upcoming => AppColor.orange,
+    AppStrings.cancelled => AppColor.red,
+    _ => AppColor.green
+  };
+}
+
+int getDividedValue(
+  int discount,
+  int length, {
+  bool isLast = false,
+}) {
+  int finalVal = discount ~/ length;
+  return isLast ? (discount - (finalVal * (length - 1))) : finalVal;
+}
+
+EdgeInsets bottomPad = const EdgeInsets.only(bottom: 10);
+
+extension Print on dynamic {
+  get print => log(this, name: AppStrings.appName);
 }

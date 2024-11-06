@@ -23,7 +23,7 @@ class Pref {
     // .replaceAll('"true"', 'true');
   }
 
-  static void setbBool(String key, bool value) async {
+  static void setBool(String key, bool value) async {
     (await pref()).setBool(key, value);
   }
 

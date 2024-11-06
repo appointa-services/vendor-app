@@ -1,11 +1,16 @@
 class DatabaseKey {
   static const String vendor = "vendor";
   static const String isAdmin = "isAdmin";
+  static const String booking = "booking";
+  static const String user = "user";
   static const String admin = "admin";
   static const String category = "category";
   static const String service = "service";
   static const String data = "data";
+  static const String employeePrice = "employeePrice";
   static const String id = "id";
+  static const String isUserByVendor = "isUserByVendor";
+  static const String vendorList = "vendorList";
   static const String email = "email";
   static const String image = "image";
   static const String name = "name";
@@ -47,4 +52,23 @@ class DatabaseKey {
   static const String address = "address";
   static const String dob = "dob";
   static const String serviceList = "serviceList";
+  static const String employeeId = "employeeId";
+  static const String bookingId = "bookingId";
+  static const String employeeName = "employeeName";
+  static const String employeeImg = "employeeImg";
+  static const String discountData = "discountData";
+  static const String duration = "duration";
+  static const String finalPrice = "finalPrice";
+  static const String userId = "userId";
+  static const String userName = "userName";
+  static const String isBookUser = "isBookUser";
+  static const String isCancelledUser = "isCancelledUser";
+  static const String paymentMethod = "paymentMethod";
+  static const String userImg = "userImg";
+  static const String orderDate = "orderDate";
+  static const String createdAt = "createdAt";
+  static const String status = "status";
+  static const String discountCode = "discountCode";
+  static const String discount = "discount";
+  static const String discountPrice = "discountPrice";
 }

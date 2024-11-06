@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:salon_user/app/helper/helper.dart';
 import 'package:salon_user/backend/authentication.dart';
 import 'package:salon_user/backend/database_ref.dart';
@@ -6,7 +7,7 @@ import 'package:salon_user/data_models/vendor_data_models.dart';
 import '../database_key.dart';
 
 class AddGetVendorData {
-  static Future<bool> updateBusimessDetail(
+  static Future<bool> updateBusinessDetail(
     BusinessModel businessModel,
     String id,
   ) async {
@@ -18,7 +19,7 @@ class AddGetVendorData {
       isDone = true;
     } on Exception catch (e) {
       isDone = false;
-      ('update business detail exception -> $e').print();
+      ('update business detail exception -> $e').print;
     }
     return isDone;
   }
@@ -39,7 +40,7 @@ class AddGetVendorData {
       isDone = true;
     } on Exception catch (e) {
       isDone = false;
-      ('update profile detail exception -> $e').print();
+      ('update profile detail exception -> $e').print;
     }
     return isDone;
   }
@@ -59,7 +60,7 @@ class AddGetVendorData {
       }
     } on Exception catch (e) {
       serviceList = null;
-      "get service list exception $e".print();
+      "get service list exception $e".print;
     }
     return serviceList;
   }
@@ -94,7 +95,51 @@ class AddGetVendorData {
             );
       }
     } on Exception catch (e) {
-      "add update service exception $e".print();
+      "add update service exception $e".print;
+    }
+    return (isAdd, service);
+  }
+
+  static Future<(bool, ServiceModel?)> updateServicePrice({
+    required String serviceId,
+    required String employeeId,
+    required String price,
+  }) async {
+    bool isAdd = false;
+    ServiceModel? service;
+    try {
+      final dataRef =
+          DatabaseRef.service.child(serviceId).child(DatabaseKey.employeePrice);
+      DatabaseEvent snapshot = await dataRef.once();
+      if (snapshot.snapshot.exists) {
+        List<EmployeePriceModel> employeePrices = (snapshot.snapshot.value
+                as Map).entries.map((e) => e.value)
+            .map((item) =>
+                EmployeePriceModel.fromJson(Map<String, dynamic>.from(item)))
+            .toList();
+
+        final existingEmployee = employeePrices.firstWhere(
+          (emp) => emp.employeeId == employeeId,
+          orElse: () => EmployeePriceModel(employeeId: '', price: ''),
+        );
+
+        if (existingEmployee.employeeId?.isNotEmpty ?? false) {
+          await dataRef
+              .child(existingEmployee.employeeId ?? "")
+              .update({'price': price});
+        } else {
+          await dataRef.push().set(
+              EmployeePriceModel(employeeId: employeeId, price: price)
+                  .toJson());
+        }
+      } else {
+        await dataRef.child(employeeId).update(EmployeePriceModel(
+              employeeId: employeeId,
+              price: price,
+            ).toJson());
+      }
+    } on Exception catch (e) {
+      "add update service exception $e".print;
     }
     return (isAdd, service);
   }
@@ -113,12 +158,12 @@ class AddGetVendorData {
       isDone = true;
     } on Exception catch (e) {
       isDone = false;
-      ('update service name exception -> $e').print();
+      ('update service name exception -> $e').print;
     }
     return isDone;
   }
 
-  static Future<List<StaffModel>?> getStafList(String userId) async {
+  static Future<List<StaffModel>?> getStaffList(String userId) async {
     List<StaffModel>? staffList = [];
     try {
       var staffData = await AuthenticationApiClass.getData(
@@ -133,7 +178,7 @@ class AddGetVendorData {
       }
     } on Exception catch (e) {
       staffList = null;
-      "get staff list exception $e".print();
+      "get staff list exception $e".print;
     }
     return staffList;
   }
@@ -145,15 +190,15 @@ class AddGetVendorData {
     StaffModel? staff;
     try {
       if (staffModel.id == null) {
-        var serviceRef = DatabaseRef.staff.push();
-        await serviceRef.set(staffModel.toJson()).then(
+        var staffRef = DatabaseRef.staff.push();
+        await staffRef.set(staffModel.toJson()).then(
           (value) async {
-            "-->> staff model ${serviceRef.key!}".print();
-            await DatabaseRef.staff.child(serviceRef.key!).update(
-              {DatabaseKey.id: serviceRef.key},
+            "-->> staff model ${staffRef.key!}".print;
+            await DatabaseRef.staff.child(staffRef.key!).update(
+              {DatabaseKey.id: staffRef.key},
             );
             Map<String, dynamic> serviceData = staffModel.toJson();
-            serviceData.addAll({DatabaseKey.id: serviceRef.key});
+            serviceData.addAll({DatabaseKey.id: staffRef.key});
             staff = StaffModel.fromJson(serviceData);
             isAdd = true;
           },
@@ -169,7 +214,7 @@ class AddGetVendorData {
             );
       }
     } on Exception catch (e) {
-      "add update staff exception $e".print();
+      "add update staff exception $e".print;
     }
     return (isAdd, staff);
   }
