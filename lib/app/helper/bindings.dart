@@ -1,3 +1,4 @@
+import '../presentation/admin_screens/admin_controller.dart';
 import '../utils/all_dependency.dart';
 
 class SplashBinding implements Bindings {

@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
-import 'package:salon_user/backend/admin_backend/get_home_data.dart';
+import 'package:salon_user/backend/admin_backend/get_vendor_data.dart';
 import 'package:salon_user/data_models/booking_model.dart';
 
 import '../../../data_models/user_model.dart';
@@ -71,7 +69,7 @@ class ClientController extends GetxController {
         id: isEdit.value ? selectedUser.id : null,
         isUserByVendor: true,
       );
-      await AdminHomeData.addUpdateUser(
+      await GetVendorData.addUpdateUser(
         user,
         controller.user?.id ?? "",
         isAdd: !isEdit.value,

@@ -6,7 +6,7 @@ import 'package:salon_user/app/utils/loading.dart';
 import 'package:salon_user/backend/database_key.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
 
-import '../../../backend/admin_backend/add_get_vendor_data.dart';
+import '../../../backend/admin_backend/get_vendor_data.dart';
 import '../../../data_models/user_model.dart';
 import '../../helper/shared_pref.dart';
 
@@ -147,10 +147,10 @@ class StaffController extends GetxController {
       image: img,
       serviceList: selectedService.map((e) => e.$1).toList(),
     );
-    await AddGetVendorData.addStaffMember(staffModel).then((value) async {
+    await GetVendorData.addStaffMember(staffModel).then((value) async {
       if (value.$1) {
         for (var data in selectedService) {
-          await AddGetVendorData.updateServicePrice(
+          await GetVendorData.updateServicePrice(
             serviceId: data.$1,
             employeeId: value.$2?.id ?? id ?? "",
             price: getPrice(

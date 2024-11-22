@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:crypt/crypt.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salon_user/app/helper/shared_pref.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
-import 'package:salon_user/backend/admin_backend/add_get_vendor_data.dart';
-import 'package:salon_user/backend/admin_backend/get_home_data.dart';
+import 'package:salon_user/backend/admin_backend/get_vendor_data.dart';
 import 'package:salon_user/backend/authentication.dart';
 import 'package:salon_user/backend/database_key.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
@@ -155,7 +153,7 @@ class AuthController extends GetxController {
     if (data != null) {
       "--->>> encrypted user ${data.toString()}".print;
       Pref.setString(Pref.userData, data.toString());
-      Pref.setString(Pref.emailKey, data.email ?? "");
+      Pref.setString(Pref.emailKey, data.email);
       if (data.businessData == null) {
         Get.offAllNamed(AppRoutes.addBusinessScreen);
       } else {
@@ -243,7 +241,7 @@ class AuthController extends GetxController {
         if (value.$1) {
           if (isRegister) {
             Pref.setString(Pref.userData, data.toString());
-            Pref.setString(Pref.emailKey, data.email ?? "");
+            Pref.setString(Pref.emailKey, data.email);
           }
           if (timer != null) {
             timer!.cancel();
@@ -313,7 +311,7 @@ class AuthController extends GetxController {
   Future<void> getCategory() async {
     isCatLoad = true;
     update();
-    categoryList = await AdminHomeData.getCategoryData();
+    categoryList = await GetVendorData.getCategoryData();
     isCatLoad = false;
     update();
   }
@@ -436,7 +434,7 @@ class AuthController extends GetxController {
     Pref.setString(Pref.userData, jsonEncode(userModel));
     userModel.toString().print;
 
-    await AddGetVendorData.updateBusinessDetail(
+    await GetVendorData.updateBusinessDetail(
       businessModel,
       userData?.id ?? "",
     ).then((value) {

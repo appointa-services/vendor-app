@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/backend/database_key.dart';
 
 class CategoryModel {

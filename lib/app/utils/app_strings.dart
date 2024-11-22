@@ -181,6 +181,8 @@ class AppStrings {
   static const String yearly = "Last year";
   static const String byEmployee = "By employee";
   static const String byService = "By service";
+  static const String byVendor = "By vendor";
+  static const String byBooking = "By booking";
   static const String editCategory = "Edit Category";
 
   /// error text

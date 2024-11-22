@@ -70,4 +70,3 @@ export 'package:flutter/gestures.dart';
 export 'package:dropdown_button2/dropdown_button2.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export '../presentation/admin_screens/admin_home_screen.dart';
-export '../presentation/admin_screens/admin_controller.dart';

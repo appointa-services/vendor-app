@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:salon_user/app/utils/all_dependency.dart';
-import 'package:salon_user/backend/admin_backend/get_home_data.dart';
-import '../../../backend/admin_backend/add_get_vendor_data.dart';
+import 'package:salon_user/backend/admin_backend/get_vendor_data.dart';
 import '../../../data_models/user_model.dart';
 import '../../../data_models/vendor_data_models.dart';
 import '../../helper/shared_pref.dart';
@@ -28,7 +27,7 @@ class DashboardController extends GetxController {
     staffList.clear();
     isStaffLoad.value = true;
     update();
-    await AddGetVendorData.getStaffList(user?.id ?? "").then((value) {
+    await GetVendorData.getStaffList(user?.id ?? "").then((value) {
       if (value != null) {
         staffList.addAll(value);
         sellsController.assignEmpData(value);
@@ -48,7 +47,7 @@ class DashboardController extends GetxController {
     serviceList.clear();
     isServiceLoad.value = true;
     update();
-    await AddGetVendorData.getServiceList(user?.id ?? "").then((value) {
+    await GetVendorData.getServiceList(user?.id ?? "").then((value) {
       if (value != null) {
         serviceList.addAll(value);
         sellsController.assignSerData(value);
@@ -66,14 +65,14 @@ class DashboardController extends GetxController {
 
   Future<void> getUserList() async {
     isUserLoad.value = true;
-    userList.value = await AdminHomeData.getUserId(user?.id ?? "");
+    userList.value = await GetVendorData.getUserId(user?.id ?? "");
     isUserLoad.value = false;
     update();
   }
 
   getAllData() async {
-    await homeController.getBooking().then((value) {
       getStaffList();
+    await homeController.getBooking().then((value) {
       getServiceList();
       getUserList();
     });

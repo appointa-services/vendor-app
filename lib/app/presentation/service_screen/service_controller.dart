@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:salon_user/app/presentation/dashboard/dashboard_controller.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
-import 'package:salon_user/backend/admin_backend/add_get_vendor_data.dart';
 import 'package:salon_user/backend/database_key.dart';
 import 'package:salon_user/data_models/user_model.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
 
+import '../../../backend/admin_backend/get_vendor_data.dart';
 import '../../common_widgets/upload_img_dialog.dart';
 import '../../helper/shared_pref.dart';
 
@@ -85,7 +84,7 @@ class ServiceController extends GetxController {
       images: imgList,
       id: selectedService?.id,
     );
-    await AddGetVendorData.addService(serviceData).then((value) async {
+    await GetVendorData.addService(serviceData).then((value) async {
       if (value.$1) {
         if (value.$2 != null) {
           controller.serviceList.add(value.$2!);
@@ -93,7 +92,7 @@ class ServiceController extends GetxController {
           controller.serviceList.removeAt(index!);
           controller.serviceList.insert(index!, serviceData);
         }
-        await AddGetVendorData.updateServiceName(
+        await GetVendorData.updateServiceName(
           controller.serviceList.map((e) => e.serviceName).toList(),
           user?.id ?? "",
         );

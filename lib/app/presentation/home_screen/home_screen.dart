@@ -6,9 +6,23 @@ import 'package:salon_user/data_models/booking_model.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../../MSG91-SDK/otp_widget.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final String widgetId = '346b73704a50353031333237';  // Your widgetId
+  final String authToken = '434921T5sYZqqXItKn673cbf53P1'; // Your authToken
+  @override
+  void initState() {
+    OTPWidget.initializeWidget(widgetId, authToken);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     DashboardController dashboardController = Get.find();
@@ -16,12 +30,22 @@ class HomeScreen extends StatelessWidget {
     RefreshController refreshController = RefreshController();
     return Scaffold(
       floatingActionButton: GestureDetector(
-        onTap: () {
-          Get.bottomSheet(
-            const AddAppointmentScreen(),
-            isDismissible: false,
-            isScrollControlled: true,
-          );
+        onTap: () async {
+          final data = {
+            'identifier': '916354058642'  // Phone number or email
+          };
+
+          // final data = {
+          //   'reqId': '346b73726d7a363333333334',  // Request ID
+          //   'otp': '520700'  // OTP entered by the user
+          // };
+          final response = await OTPWidget.sendOTP(data);
+          "---->>> $response".print;
+          // Get.bottomSheet(
+          //   const AddAppointmentScreen(),
+          //   isDismissible: false,
+          //   isScrollControlled: true,
+          // );
         },
         child: const DecoratedBox(
           decoration: BoxDecoration(

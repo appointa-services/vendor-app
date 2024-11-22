@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "5534e701a2c505fed1f0799e652dd6ae23bd4d2c4cf797220e5ced5764a7c1c2"
+      sha256: "71c01c1998c40b3af1944ad0a5f374b4e6fef7f3d2df487f3970dbeadaeb25a1"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.44"
+    version: "1.3.46"
   args:
     dependency: transitive
     description:
@@ -253,34 +253,34 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_auth
-      sha256: d453acec0d958ba0e25d41a9901b32cb77d1535766903dea7a61b2788c304596
+      sha256: "49c356bac95ed234805e3bb928a86d5b21a4d3745d77be53ecf2d61409ddb802"
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.1"
+    version: "5.3.3"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
-      sha256: "78966c2ef774f5bf2a8381a307222867e9ece3509110500f7a138c115926aa65"
+      sha256: "9bc336ce673ea90a9dbdb04f0e9a3e52a32321898dc869cdefe6cc0f0db369ed"
       url: "https://pub.dev"
     source: hosted
-    version: "7.4.7"
+    version: "7.4.9"
   firebase_auth_web:
     dependency: transitive
     description:
       name: firebase_auth_web
-      sha256: "77ad3b252badedd3f08dfa21a4c7fe244be96c6da3a4067f253b13ea5d32424c"
+      sha256: "56dcce4293e2a2c648c33ab72c09e888bd0e64cbb1681a32575ec9dc9c2f67f3"
       url: "https://pub.dev"
     source: hosted
-    version: "5.13.2"
+    version: "5.13.4"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "51dfe2fbf3a984787a2e7b8592f2f05c986bfedd6fdacea3f9e0a7beb334de96"
+      sha256: "2438a75ad803e818ad3bd5df49137ee619c46b6fc7101f4dbc23da07305ce553"
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.0"
+    version: "3.8.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -301,26 +301,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_database
-      sha256: "64f8076912139e83f3db3d853df5bffd4c6150a71ffef393584318efd4883f7c"
+      sha256: de7474c0d412fbeedb68eaeced2ef2a60de8673b3fb05bea50737c6f088ce3f4
       url: "https://pub.dev"
     source: hosted
-    version: "11.1.4"
+    version: "11.1.6"
   firebase_database_platform_interface:
     dependency: transitive
     description:
       name: firebase_database_platform_interface
-      sha256: "750e9076a41bc78ce87b95f9d0548f224e5b0679009f6236bf5cf98884db60dd"
+      sha256: "0fce969fa8f7dc00c2b1593e925a15435c4018451fa68c34f49d7e15876e9ff2"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5+44"
+    version: "0.2.5+46"
   firebase_database_web:
     dependency: transitive
     description:
       name: firebase_database_web
-      sha256: daf3fbde892ff5f2ea7469eff1ab22b7988fe96b637919fdec6890141eb51023
+      sha256: "99da90669d271c4123ab6b9d2b322f2dcf2bdd11b10c9c363befc528b2f8e8b7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.6+2"
+    version: "0.2.6+4"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -492,10 +492,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_maps_flutter
-      sha256: "2e302fa3aaf4e2a297f0342d83ebc5e8e9f826e9a716aef473fe7f404ec630a7"
+      sha256: "209856c8e5571626afba7182cf634b2910069dc567954e76ec3e3fb37f5e9db3"
       url: "https://pub.dev"
     source: hosted
-    version: "2.9.0"
+    version: "2.10.0"
   google_maps_flutter_android:
     dependency: transitive
     description:
@@ -532,10 +532,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: "0b8787cb9c1a68ad398e8010e8c8766bfa33556d2ab97c439fb4137756d7308f"
+      sha256: fad6ddc80c427b0bba705f2116204ce1173e09cf299f85e053d57a55e5b2dd56
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "6.2.2"
   google_sign_in_android:
     dependency: transitive
     description:

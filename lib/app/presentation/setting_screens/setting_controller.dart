@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:crypt/crypt.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/app/utils/loading.dart';
-import 'package:salon_user/backend/admin_backend/add_get_vendor_data.dart';
 import 'package:salon_user/backend/database_key.dart';
 
+import '../../../backend/admin_backend/get_vendor_data.dart';
 import '../../../data_models/user_model.dart';
 import '../../helper/shared_pref.dart';
 
@@ -27,7 +27,7 @@ class SettingController extends GetxController {
     Map? userModel = user?.toJson();
     if (!(isUpdatePass && !isPassCondition())) {
       Loader.show();
-      await AddGetVendorData.updateProfile(
+      await GetVendorData.updateProfile(
         name.text,
         mobile.text,
         newPass.text.isEmpty

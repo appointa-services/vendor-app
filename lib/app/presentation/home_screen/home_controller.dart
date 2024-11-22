@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/data_models/vendor_data_models.dart';
 
-import '../../../backend/admin_backend/get_home_data.dart';
+import '../../../backend/admin_backend/get_vendor_data.dart';
 import '../../../data_models/booking_model.dart';
 import '../../../data_models/user_model.dart';
 import '../../helper/shared_pref.dart';
@@ -28,7 +28,7 @@ class HomeController extends GetxController {
   /// get booking data
   Future<void> getBooking() async {
     isBookingLoad.value = true;
-    bookingList.value = await AdminHomeData.getBooking(
+    bookingList.value = await GetVendorData.getBooking(
       user?.id ?? "",
     );
     getFilterBooking();
@@ -68,7 +68,7 @@ class HomeController extends GetxController {
     String? method,
   }) async {
     Loader.show();
-    await AdminHomeData.updateStatus(bookingId, status, method).then(
+    await GetVendorData.updateStatus(bookingId, status, method).then(
       (value) {
         if (value) {
           bookingList.firstWhere(
@@ -134,7 +134,7 @@ class HomeController extends GetxController {
       isBookUser: false,
     );
     Loader.show();
-    if (await AdminHomeData.addBooking(bookingModel)) {
+    if (await GetVendorData.addBooking(bookingModel)) {
       bookingList.add(bookingModel);
       getFilterBooking();
       Get.back();
