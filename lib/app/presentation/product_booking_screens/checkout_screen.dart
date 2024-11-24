@@ -139,9 +139,9 @@ class CheckoutScreen extends GetView<VendorNBookingController> {
                             }
                           },
                           isSemanticButton: false,
-                          style: const ButtonStyle(
-                            overlayColor: WidgetStateColor.transparent,
-                          ),
+                          // style: const ButtonStyle(
+                          //   overlayColor: WidgetStateColor.transparent,
+                          // ),
                           child: const S14Text(
                             "Apply",
                             color: AppColor.grey100,

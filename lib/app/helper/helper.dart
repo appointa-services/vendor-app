@@ -33,7 +33,7 @@ class Helper {
     if (currentBackPressTime == null ||
         now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
-      Fluttertoast.showToast(msg: "Double tap to exit");
+      // Fluttertoast.showToast(msg: "Double tap to exit");
     } else {
       exit(0);
     }
