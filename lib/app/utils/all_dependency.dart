@@ -60,5 +60,5 @@ export 'package:google_maps_flutter/google_maps_flutter.dart'
     hide ClusterManager, Cluster;
 export 'package:flutter/foundation.dart';
 export 'package:flutter/gestures.dart';
-export 'package:maps_launcher/maps_launcher.dart';
+export '../common_widgets/map_launcher.dart';
 export 'package:intl/intl.dart' hide TextDirection;

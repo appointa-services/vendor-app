@@ -1,4 +1,3 @@
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:salon_user/app/utils/all_dependency.dart';
 import 'package:salon_user/data_models/user_model.dart';
 
@@ -11,6 +10,7 @@ class FavouriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileController controller = Get.find();
+
     return CommonAppbar(
       title: AppStrings.favourite,
       padding: EdgeInsets.zero,
@@ -32,8 +32,7 @@ class FavouriteScreen extends StatelessWidget {
                       : controller.favouriteList.length,
                   padding: const EdgeInsets.all(p16),
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.59,
                     crossAxisSpacing: 16,
@@ -77,10 +76,10 @@ class FavouriteScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       child: ImageNet(
                                         userModel?.businessData?.logo ?? "",
-                                        height: (MediaQuery.sizeOf(context)
-                                                    .width /
-                                                2) -
-                                            24,
+                                        height:
+                                            (MediaQuery.sizeOf(context).width /
+                                                    2) -
+                                                24,
                                         width: double.infinity,
                                         boxFit: BoxFit.cover,
                                       ),
@@ -101,8 +100,7 @@ class FavouriteScreen extends StatelessWidget {
                                             child: userModel?.isLoad.value ??
                                                     false
                                                 ? const Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8),
+                                                    padding: EdgeInsets.all(8),
                                                     child:
                                                         CircularProgressIndicator(
                                                       strokeWidth: 2,
@@ -142,8 +140,7 @@ class FavouriteScreen extends StatelessWidget {
                                     bottom: 10,
                                   ),
                                   child: S12Text(
-                                    userModel
-                                            ?.businessData?.businessAddress ??
+                                    userModel?.businessData?.businessAddress ??
                                         "",
                                     maxLines: 2,
                                   ),
